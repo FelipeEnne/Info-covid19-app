@@ -1,7 +1,7 @@
 
 const initialState = {
-  pending: false,
-  categories: [],
+  loading: false,
+  resp: {},
   error: '',
 };
 
@@ -10,18 +10,18 @@ const summaryReducer = (state = initialState, action) => {
     case 'FETCH_PRODUCTS_LOADING':
       return {
         ...state,
-        pending: true,
+        loading: true,
       };
     case 'FETCH_PRODUCTS_SUCCESS':
       return {
         ...state,
-        pending: false,
+        loading: false,
         resp: action.resp,
       };
     case 'FETCH_PRODUCTS_ERROR':
       return {
         ...state,
-        pending: false,
+        loading: false,
         error: action.error,
       };
     default:
