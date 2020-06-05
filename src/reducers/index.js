@@ -1,9 +1,9 @@
 import { combineReducers, applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import { categoriesReducer } from './bookscategories';
+import summaryReducer from './summary';
 
 const allReducer = combineReducers({
-  categories: categoriesReducer,
+  summary: summaryReducer,
 });
 
 const middlewares = [thunk];
