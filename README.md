@@ -1,5 +1,5 @@
 <br />
-<h1 align="center">Book Catalogue</h1>
+<h1 align="center">Info covid19 app</h1>
 
 ## Table of Contents
 
