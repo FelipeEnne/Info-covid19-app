@@ -5,18 +5,18 @@ const initialState = {
   error: '',
 };
 
-export const categoriesReducer = (state = initialState, action) => {
+const summaryReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'FETCH_PRODUCTS_PENDING':
+    case 'FETCH_PRODUCTS_LOADING':
       return {
         ...state,
         pending: true,
       };
-    case 'FETCH_CATEGORIES_SUCCESS':
+    case 'FETCH_PRODUCTS_SUCCESS':
       return {
         ...state,
         pending: false,
-        categories: action.categories,
+        resp: action.resp,
       };
     case 'FETCH_PRODUCTS_ERROR':
       return {
@@ -29,4 +29,4 @@ export const categoriesReducer = (state = initialState, action) => {
   }
 };
 
-export default categoriesReducer;
+export default summaryReducer;

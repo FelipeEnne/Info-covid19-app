@@ -2,9 +2,9 @@ const fetchProductsLoading = () => ({
   type: 'FETCH_PRODUCTS_LOADING',
 });
 
-const fetchProductsSuccess = products => ({
+const fetchProductsSuccess = resp => ({
   type: 'FETCH_PRODUCTS_SUCCESS',
-  products,
+  resp,
 });
 
 const fetchProductsError = error => ({
