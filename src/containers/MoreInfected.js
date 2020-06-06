@@ -9,10 +9,13 @@ import {
   sortTotalConfirmed,
   getTenArray,
   makeid,
+  returnData,
 } from './helpers';
-import CountryTag from './countryTag';
+import CountryTag from './CountryTag';
+import FooterApp from './FooterApp';
 
 const MoreInfected = props => {
+  console.log(props);
   const { fetchSummary, loading, resp } = props;
 
   useEffect(() => {
@@ -22,6 +25,7 @@ const MoreInfected = props => {
   let dataCountries = {};
   let dataLength = 0;
   let dataTenCountries = [];
+  let data = '';
 
   const shouldComponentRender = () => {
     if (loading === true || resp === {}) return false;
@@ -29,6 +33,7 @@ const MoreInfected = props => {
     if (dataCountries === undefined) return false;
     sortTotalConfirmed(dataCountries);
     dataLength = dataCountries.length - 1;
+    data = returnData(resp.Date);
     dataTenCountries = getTenArray(dataCountries, dataLength);
     return true;
   };
@@ -50,6 +55,7 @@ const MoreInfected = props => {
           <CountryTag key={makeid(5)} value={value} />
         ))}
       </div>
+      <FooterApp value={data} />
     </div>
   );
 };

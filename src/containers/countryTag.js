@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { numberFormat } from './helpers';
 
 const CountryTag = ({ value }) => (
   <div className="divCateg row">
@@ -9,15 +10,15 @@ const CountryTag = ({ value }) => (
     </div>
     <div className="col-sm">
       <h5>Total Confirmed: </h5>
-      <p>{value.TotalConfirmed}</p>
+      <p>{numberFormat(value.TotalConfirmed)}</p>
     </div>
     <div className="col-sm">
       <h5>Total Deaths: </h5>
-      <p>{value.TotalDeaths}</p>
+      <p>{numberFormat(value.TotalDeaths)}</p>
     </div>
     <div className="col-sm">
       <h5>Total Recovered: </h5>
-      <p>{value.TotalRecovered}</p>
+      <p>{numberFormat(value.TotalRecovered)}</p>
     </div>
   </div>
 );

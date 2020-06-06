@@ -91,3 +91,26 @@ body {
   padding: 0;
   align-self: center;
 }
+
+.footer-app {
+  display: flex;
+  float: right;
+}
+
+.footer-app h5 {
+  margin: 5px 11px;
+  padding: 0;
+  font-size: 17px;
+  letter-spacing: 1.9px;
+  color: #1212129e;
+  align-self: center;
+}
+
+.footer-app p {
+  margin: 5px 11px;
+  padding: 0;
+  font-size: 17px;
+  letter-spacing: 1.9px;
+  color: #1212129e;
+  align-self: center;
+}
