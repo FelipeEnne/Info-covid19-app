@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchSummary from '../actions/fechSummary';
+import fetchSummary from '../../actions/fechSummary';
 import {
   getProductsError,
   getProductsLoading,
   getProducts,
-  sortTotalConfirmed,
+  sortNewConfirmed,
   getTenArray,
   makeid,
   returnData,
-} from './helpers';
-import CountryTag from './CountryTag';
-import FooterApp from './FooterApp';
+} from '../Helper/helpers';
+import CountryNewTag from './CountryNewTag';
+import FooterApp from '../Footer/FooterApp';
 
-const MoreInfected = props => {
+const MoreNewInfected = props => {
   // console.log(props);
   const { fetchSummary, loading, resp } = props;
 
@@ -31,7 +31,7 @@ const MoreInfected = props => {
     if (loading === true || resp === {}) return false;
     dataCountries = resp.Countries;
     if (dataCountries === undefined) return false;
-    sortTotalConfirmed(dataCountries);
+    sortNewConfirmed(dataCountries);
     dataLength = dataCountries.length - 1;
     data = returnData(resp.Date);
     dataTenCountries = getTenArray(dataCountries, dataLength);
@@ -52,7 +52,7 @@ const MoreInfected = props => {
     <div>
       <div className="categlInfo container">
         {dataTenCountries.map(value => (
-          <CountryTag key={makeid(5)} value={value} />
+          <CountryNewTag key={makeid(5)} value={value} />
         ))}
       </div>
       <FooterApp value={data} />
@@ -61,7 +61,7 @@ const MoreInfected = props => {
 };
 
 
-MoreInfected.propTypes = {
+MoreNewInfected.propTypes = {
   loading: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   resp: PropTypes.object.isRequired,
@@ -84,4 +84,4 @@ const mapStateToProps = state => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MoreInfected);
+export default connect(mapStateToProps, mapDispatchToProps)(MoreNewInfected);
