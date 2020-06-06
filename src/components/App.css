@@ -1,6 +1,7 @@
 body {
   padding: 0;
   margin: 0;
+  color: #212529c2;
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -13,7 +14,7 @@ body {
   width: 80%;
   margin: 3rem auto;
   background-color: #fafafa;;
-  box-shadow: 20px 18px 22px 28px #00000029;
+  box-shadow: 16px 8px 22px 28px #00000029;
 }
 
 .nav-app {
@@ -63,4 +64,54 @@ body {
 
 .Infodiv p {
   margin: 1px 10px;
+}
+
+.divCateg {
+  padding: 1.5rem 4rem 1.5rem 1.5rem;
+  border: 1px solid  #e8e8e8;
+  border-radius: 4px;
+  margin: 1rem auto;
+  background-color: #ffffff;
+}
+
+.divCateg div{
+  display: block;
+}
+
+.divCateg h5 {
+  margin: 5px 11px;
+  padding: 0;
+  font-size: 17px;
+  letter-spacing: 1.9px;
+  color: #212529d9;
+  align-self: center;
+}
+
+.divCateg p {
+  margin: 5px 11px;
+  padding: 0;
+  align-self: center;
+}
+
+.footer-app {
+  display: flex;
+  float: right;
+}
+
+.footer-app h5 {
+  margin: 5px 11px;
+  padding: 0;
+  font-size: 17px;
+  letter-spacing: 1.9px;
+  color: #1212129e;
+  align-self: center;
+}
+
+.footer-app p {
+  margin: 5px 11px;
+  padding: 0;
+  font-size: 17px;
+  letter-spacing: 1.9px;
+  color: #1212129e;
+  align-self: center;
 }

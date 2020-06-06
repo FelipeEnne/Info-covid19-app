@@ -6,28 +6,35 @@ import {
   getProductsError,
   getProductsLoading,
   getProducts,
-  numberFormat,
+  sortTotalConfirmed,
+  getTenArray,
+  makeid,
+  returnData,
 } from './helpers';
+import CountryTag from './CountryTag';
+import FooterApp from './FooterApp';
 
-const Summary = props => {
+const MoreInfected = props => {
+  // console.log(props);
   const { fetchSummary, loading, resp } = props;
 
   useEffect(() => {
     fetchSummary();
   }, [fetchSummary]);
 
-  let dataGlobal = {};
-  let TotalConfirmed;
-  let TotalDeaths;
-  let TotalRecovered;
+  let dataCountries = {};
+  let dataLength = 0;
+  let dataTenCountries = [];
+  let data = '';
 
   const shouldComponentRender = () => {
     if (loading === true || resp === {}) return false;
-    dataGlobal = resp.Global;
-    if (dataGlobal === undefined) return false;
-    TotalConfirmed = numberFormat(dataGlobal.TotalConfirmed);
-    TotalDeaths = numberFormat(dataGlobal.TotalDeaths);
-    TotalRecovered = numberFormat(dataGlobal.TotalRecovered);
+    dataCountries = resp.Countries;
+    if (dataCountries === undefined) return false;
+    sortTotalConfirmed(dataCountries);
+    dataLength = dataCountries.length - 1;
+    data = returnData(resp.Date);
+    dataTenCountries = getTenArray(dataCountries, dataLength);
     return true;
   };
 
@@ -42,33 +49,19 @@ const Summary = props => {
   }
 
   return (
-    <div className="container">
-      <div className="geralInfo row">
-        <div className="Infodiv col">
-          <div>
-            <h5>Total Confirmed: </h5>
-            <p>{TotalConfirmed}</p>
-          </div>
-        </div>
-        <div className="Infodiv  col">
-          <div>
-            <h5>Total Deaths: </h5>
-            <p>{TotalDeaths}</p>
-          </div>
-        </div>
-        <div className="Infodiv  col">
-          <div>
-            <h5>Total Recovered: </h5>
-            <p>{TotalRecovered}</p>
-          </div>
-        </div>
+    <div>
+      <div className="categlInfo container">
+        {dataTenCountries.map(value => (
+          <CountryTag key={makeid(5)} value={value} />
+        ))}
       </div>
+      <FooterApp value={data} />
     </div>
   );
 };
 
 
-Summary.propTypes = {
+MoreInfected.propTypes = {
   loading: PropTypes.bool.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   resp: PropTypes.object.isRequired,
@@ -91,4 +84,4 @@ const mapStateToProps = state => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Summary);
+export default connect(mapStateToProps, mapDispatchToProps)(MoreInfected);
