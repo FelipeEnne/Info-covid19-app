@@ -17,11 +17,17 @@ const Summary = props => {
   }, [fetchSummary]);
 
   let dataGlobal = {};
+  let TotalConfirmed;
+  let TotalDeaths;
+  let TotalRecovered;
 
   const shouldComponentRender = () => {
     if (loading === true || resp === {}) return false;
     dataGlobal = resp.Global;
     if (dataGlobal === undefined) return false;
+    TotalConfirmed = numberFormat(dataGlobal.TotalConfirmed);
+    TotalDeaths = numberFormat(dataGlobal.TotalDeaths);
+    TotalRecovered = numberFormat(dataGlobal.TotalRecovered);
     return true;
   };
 
@@ -40,32 +46,20 @@ const Summary = props => {
       <div className="geralInfo row">
         <div className="Infodiv col">
           <div>
-            <h5>New Confirmed: </h5>
-            <p>{numberFormat(dataGlobal.NewConfirmed)}</p>
-          </div>
-          <div>
             <h5>Total Confirmed: </h5>
-            <p>{numberFormat(dataGlobal.TotalConfirmed)}</p>
+            <p>{TotalConfirmed}</p>
           </div>
         </div>
         <div className="Infodiv  col">
-          <div>
-            <h5>New Deaths: </h5>
-            <p>{numberFormat(dataGlobal.NewDeaths)}</p>
-          </div>
           <div>
             <h5>Total Deaths: </h5>
-            <p>{numberFormat(dataGlobal.TotalDeaths)}</p>
+            <p>{TotalDeaths}</p>
           </div>
         </div>
         <div className="Infodiv  col">
           <div>
-            <h5>New Recovered: </h5>
-            <p>{numberFormat(dataGlobal.NewRecovered)}</p>
-          </div>
-          <div>
             <h5>Total Recovered: </h5>
-            <p>{numberFormat(dataGlobal.TotalRecovered)}</p>
+            <p>{TotalRecovered}</p>
           </div>
         </div>
       </div>

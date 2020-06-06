@@ -10,6 +10,10 @@ export function sortTotalConfirmed(array) {
   array.sort((a, b) => a.TotalConfirmed - b.TotalConfirmed);
 }
 
+export function sortNewConfirmed(array) {
+  array.sort((a, b) => a.NewConfirmed - b.NewConfirmed);
+}
+
 export function getTenArray(array, len) {
   const arr = [];
   let count = len;

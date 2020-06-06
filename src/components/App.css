@@ -1,6 +1,7 @@
 body {
   padding: 0;
   margin: 0;
+  color: #212529c2;
   box-sizing: border-box;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -13,7 +14,7 @@ body {
   width: 80%;
   margin: 3rem auto;
   background-color: #fafafa;;
-  box-shadow: 20px 18px 22px 28px #00000029;
+  box-shadow: 16px 8px 22px 28px #00000029;
 }
 
 .nav-app {
@@ -82,7 +83,7 @@ body {
   padding: 0;
   font-size: 17px;
   letter-spacing: 1.9px;
-  color: #1212129e;
+  color: #212529d9;
   align-self: center;
 }
 
