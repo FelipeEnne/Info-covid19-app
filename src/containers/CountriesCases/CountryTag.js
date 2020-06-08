@@ -3,24 +3,14 @@ import PropTypes from 'prop-types';
 import { numberFormat } from '../Helper/helpers';
 
 const CountryTag = ({ value }) => (
-  <div className="divCateg row">
-    <div className="col-sm">
-      <h5>Country: </h5>
-      <p>{value.Country}</p>
-    </div>
-    <div className="col-sm">
-      <h5>Total Confirmed: </h5>
-      <p>{numberFormat(value.TotalConfirmed)}</p>
-    </div>
-    <div className="col-sm">
-      <h5>Total Deaths: </h5>
-      <p>{numberFormat(value.TotalDeaths)}</p>
-    </div>
-    <div className="col-sm">
-      <h5>Total Recovered: </h5>
-      <p>{numberFormat(value.TotalRecovered)}</p>
-    </div>
-  </div>
+  <tbody>
+    <tr>
+      <td>{value.Country}</td>
+      <td>{numberFormat(value.TotalConfirmed)}</td>
+      <td>{numberFormat(value.TotalDeaths)}</td>
+      <td>{numberFormat(value.TotalConfirmed)}</td>
+    </tr>
+  </tbody>
 );
 
 

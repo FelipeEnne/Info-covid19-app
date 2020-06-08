@@ -44,23 +44,23 @@ const Summary = props => {
   return (
     <div className="container">
       <div className="geralInfo row">
-        <div className="Infodiv col">
-          <div>
-            <h5>Total Confirmed: </h5>
-            <p>{TotalConfirmed}</p>
-          </div>
-        </div>
-        <div className="Infodiv  col">
-          <div>
-            <h5>Total Deaths: </h5>
-            <p>{TotalDeaths}</p>
-          </div>
-        </div>
-        <div className="Infodiv  col">
-          <div>
-            <h5>Total Recovered: </h5>
-            <p>{TotalRecovered}</p>
-          </div>
+        <div className="Infodiv">
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Total Confirmed</th>
+                <th scope="col">Total Deaths</th>
+                <th scope="col">Total Recovered</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{TotalConfirmed}</td>
+                <td>{TotalDeaths}</td>
+                <td>{TotalRecovered}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
