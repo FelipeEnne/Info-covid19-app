@@ -68,20 +68,15 @@ MoreNewInfected.propTypes = {
   fetchSummary: PropTypes.instanceOf(Function).isRequired,
 };
 
-const mapDispatchToProps = {
+const mapDispatchToProps = () => ({
   fetchSummary,
-};
+});
 
 
-const mapStateToProps = state => {
-  const { summary } = state;
-  return (
-    {
-      error: getProductsError(summary),
-      loading: getProductsLoading(summary),
-      resp: getProducts(summary),
-    }
-  );
-};
+const mapStateToProps = state => ({
+  error: getProductsError(state.summary),
+  loading: getProductsLoading(state.summary),
+  resp: getProducts(state.summary),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoreNewInfected);
