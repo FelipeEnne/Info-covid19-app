@@ -1,7 +1,8 @@
+import resp from './initialState';
 
 const initialState = {
   loading: false,
-  resp: {},
+  resp,
   error: '',
 };
 

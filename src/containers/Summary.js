@@ -22,13 +22,16 @@ const Summary = props => {
   let TotalRecovered;
 
   const shouldComponentRender = () => {
-    if (loading === true || resp === {}) return false;
-    dataGlobal = resp.Global;
-    if (dataGlobal === undefined) return false;
-    TotalConfirmed = numberFormat(dataGlobal.TotalConfirmed);
-    TotalDeaths = numberFormat(dataGlobal.TotalDeaths);
-    TotalRecovered = numberFormat(dataGlobal.TotalRecovered);
-    return true;
+    console.log(props);
+    if (resp !== undefined) {
+      if (loading === true || resp === {}) return false;
+      dataGlobal = resp.Global;
+      if (dataGlobal === undefined) return false;
+      TotalConfirmed = numberFormat(dataGlobal.TotalConfirmed);
+      TotalDeaths = numberFormat(dataGlobal.TotalDeaths);
+      TotalRecovered = numberFormat(dataGlobal.TotalRecovered);
+      return true;
+    }
   };
 
   const loadDiv = () => (
