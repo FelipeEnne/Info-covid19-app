@@ -1,41 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { numberFormat } from '../Helper/helpers';
+import { numberFormat } from '../helpers';
 
 const CountryInfo = ({ value }) => (
   <div>
-    <div className="divCategInfo row">
-      <div className="col-sm">
-        <h5>Country: </h5>
-        <p>{value.Country}</p>
-      </div>
-      <div className="col-sm">
-        <h5>Total Confirmed: </h5>
-        <p>{numberFormat(value.TotalConfirmed)}</p>
-      </div>
-      <div className="col-sm">
-        <h5>Total Deaths: </h5>
-        <p>{numberFormat(value.TotalDeaths)}</p>
-      </div>
-      <div className="col-sm">
-        <h5>Total Deaths: </h5>
-        <p>{numberFormat(value.TotalDeaths)}</p>
-      </div>
-    </div>
-    <div className="divCategInfo row">
-      <div className="col-sm">
-        <h5>New Confirmed: </h5>
-        <p>{numberFormat(value.NewConfirmed)}</p>
-      </div>
-      <div className="col-sm">
-        <h5>New Deaths: </h5>
-        <p>{numberFormat(value.NewDeaths)}</p>
-      </div>
-      <div className="col-sm">
-        <h5>New Recovered: </h5>
-        <p>{numberFormat(value.NewRecovered)}</p>
-      </div>
-    </div>
+    <table className="table">
+      <thead className="thead-light">
+        <tr>
+          <th scope="col">Total Confirmed</th>
+          <th scope="col">Total Deaths</th>
+          <th scope="col">Total Recovered</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{numberFormat(value.TotalConfirmed)}</td>
+          <td>{numberFormat(value.TotalDeaths)}</td>
+          <td>{numberFormat(value.TotalConfirmed)}</td>
+        </tr>
+      </tbody>
+    </table>
+    <br />
+    <table className="table">
+      <thead className="thead-light">
+        <tr>
+          <th scope="col">New Confirmed</th>
+          <th scope="col">New Deaths</th>
+          <th scope="col">New Recovered</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{numberFormat(value.NewConfirmed)}</td>
+          <td>{numberFormat(value.NewDeaths)}</td>
+          <td>{numberFormat(value.NewRecovered)}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 );
 

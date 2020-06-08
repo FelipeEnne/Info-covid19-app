@@ -7,10 +7,10 @@ import {
   getProductsLoading,
   getProducts,
   returnData,
-} from '../Helper/helpers';
+} from '../helpers';
 import selectCountry from '../../actions/selectCountry';
 import CountryInfo from './CountryInfo';
-import FooterApp from '../Footer/FooterApp';
+import FooterApp from '../FooterApp';
 
 
 const SeachCountry = props => {

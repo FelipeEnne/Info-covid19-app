@@ -10,9 +10,9 @@ import {
   getTenArray,
   makeid,
   returnData,
-} from '../Helper/helpers';
+} from '../helpers';
 import CountryTag from './CountryTag';
-import FooterApp from '../Footer/FooterApp';
+import FooterApp from '../FooterApp';
 
 const MoreInfected = props => {
   // console.log(props);
@@ -50,10 +50,20 @@ const MoreInfected = props => {
 
   return (
     <div>
-      <div className="categlInfo container">
-        {dataTenCountries.map(value => (
-          <CountryTag key={makeid(5)} value={value} />
-        ))}
+      <div className="divCateg">
+        <table className="table">
+          <thead className="thead-light">
+            <tr>
+              <th scope="col">Country</th>
+              <th scope="col">Total Confirmed</th>
+              <th scope="col">Total Deaths</th>
+              <th scope="col">Total Recovered</th>
+            </tr>
+          </thead>
+          {dataTenCountries.map(value => (
+            <CountryTag key={makeid(5)} value={value} />
+          ))}
+        </table>
       </div>
       <FooterApp value={data} />
     </div>

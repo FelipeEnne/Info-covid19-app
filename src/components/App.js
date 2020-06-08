@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Summary from '../containers/Summary/Summary';
+import Summary from '../containers/Summary';
 import MoreInfected from '../containers/CountriesCases/MoreInfected';
 import MoreNewInfected from '../containers/NewCountriesCases/MoreNewInfected';
 import SearchCountry from '../containers/SearchCountry/SearchCountry';
