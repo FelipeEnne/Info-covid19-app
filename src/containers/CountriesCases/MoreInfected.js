@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchSummary from '../actions/fechSummary';
+import fetchSummary from '../../actions/fechSummary';
 import {
   getProductsError,
   getProductsLoading,
@@ -10,9 +10,9 @@ import {
   getTenArray,
   makeid,
   returnData,
-} from './helpers';
+} from '../Helper/helpers';
 import CountryTag from './CountryTag';
-import FooterApp from './FooterApp';
+import FooterApp from '../Footer/FooterApp';
 
 const MoreInfected = props => {
   // console.log(props);
@@ -68,20 +68,15 @@ MoreInfected.propTypes = {
   fetchSummary: PropTypes.instanceOf(Function).isRequired,
 };
 
-const mapDispatchToProps = {
+const mapDispatchToProps = () => ({
   fetchSummary,
-};
+});
 
 
-const mapStateToProps = state => {
-  const { summary } = state;
-  return (
-    {
-      error: getProductsError(summary),
-      loading: getProductsLoading(summary),
-      resp: getProducts(summary),
-    }
-  );
-};
+const mapStateToProps = state => ({
+  error: getProductsError(state.summary),
+  loading: getProductsLoading(state.summary),
+  resp: getProducts(state.summary),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoreInfected);

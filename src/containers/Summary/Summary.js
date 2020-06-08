@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchSummary from '../actions/fechSummary';
+import fetchSummary from '../../actions/fechSummary';
 import {
   getProductsError,
   getProductsLoading,
   getProducts,
   numberFormat,
-} from './helpers';
+} from '../Helper/helpers';
 
 const Summary = props => {
   const { fetchSummary, loading, resp } = props;
