@@ -22,7 +22,6 @@ const SeachCountry = props => {
     country,
   } = props;
 
-  console.log(props);
   useEffect(() => {
     fetchSummary();
   }, [fetchSummary]);
