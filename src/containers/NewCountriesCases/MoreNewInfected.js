@@ -10,9 +10,9 @@ import {
   getTenArray,
   makeid,
   returnData,
-} from '../Helper/helpers';
+} from '../helpers';
 import CountryNewTag from './CountryNewTag';
-import FooterApp from '../Footer/FooterApp';
+import FooterApp from '../FooterApp';
 
 const MoreNewInfected = props => {
   // console.log(props);

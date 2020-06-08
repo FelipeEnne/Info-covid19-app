@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { numberFormat } from '../Helper/helpers';
+import { numberFormat } from '../helpers';
 
 const CountryTag = ({ value }) => (
   <tbody>
