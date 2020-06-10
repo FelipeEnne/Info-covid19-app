@@ -10,6 +10,14 @@ export function sortTotalConfirmed(array) {
   array.sort((a, b) => a.TotalConfirmed - b.TotalConfirmed);
 }
 
+export function sortTotalDeaths(array) {
+  array.sort((a, b) => a.TotalDeaths - b.TotalDeaths);
+}
+
+export function sortTotalRecovered(array) {
+  array.sort((a, b) => a.TotalRecovered - b.TotalRecovered);
+}
+
 export function sortNewConfirmed(array) {
   array.sort((a, b) => a.NewConfirmed - b.NewConfirmed);
 }
