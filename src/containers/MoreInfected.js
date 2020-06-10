@@ -65,8 +65,6 @@ const MoreInfected = props => {
 
   const handleFilterChange = e => {
     addFilter(e.target.value);
-    sortTotalDeaths(resp);
-    dataTenCountries = getTenArray(resp, dataLength);
   };
 
   return (

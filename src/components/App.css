@@ -19,9 +19,10 @@ body {
 }
 
 .nav-app {
+  margin: 20px 0px;
+  padding-bottom: 22px;
   width: 100%;
   background-color: #fff;
-  padding: 2rem 1rem;
   display: inline-flex;
   font-family: 'Montserrat', sans-serif;
   border-bottom: 1px solid #e8e8e8;

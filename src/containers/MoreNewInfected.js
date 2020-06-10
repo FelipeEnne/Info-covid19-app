@@ -7,6 +7,8 @@ import {
   getProductsLoading,
   getProducts,
   sortNewConfirmed,
+  sortNewDeaths,
+  sortNewRecovered,
   getTenArray,
   makeid,
   returnData,
@@ -14,7 +16,8 @@ import {
 import CountryNewTag from '../components/CountryNewTag';
 import FooterApp from '../components/FooterApp';
 import Loading from '../components/loading';
-
+import FilterNewInfected from '../components/FilterNewInfected';
+import updateFilter from '../actions/updateFilter';
 
 const MoreNewInfected = props => {
   // console.log(props);
@@ -23,25 +26,37 @@ const MoreNewInfected = props => {
     loading,
     resp,
     date,
+    filter,
+    addFilter,
   } = props;
 
   useEffect(() => {
     fetchSummary();
   }, [fetchSummary]);
 
-  let dataCountries = {};
-  let dataLength = 0;
-  let dataTenCountries = [];
+  let dataTenCountries;
+  const dataLength = resp.length - 1;
   let data = '';
 
   const shouldComponentRender = () => {
     if (loading === true || resp === {}) return false;
-    dataCountries = resp;
-    if (dataCountries === undefined) return false;
-    sortNewConfirmed(dataCountries);
-    dataLength = dataCountries.length - 1;
+
+    if (resp === undefined) return false;
+    switch (filter) {
+      case 'New Confirmed':
+        sortNewConfirmed(resp);
+        break;
+      case 'New Deaths':
+        sortNewDeaths(resp);
+        break;
+      case 'New Recovered':
+        sortNewRecovered(resp);
+        break;
+      default:
+        sortNewConfirmed(resp);
+    }
+    dataTenCountries = getTenArray(resp, dataLength);
     data = returnData(date);
-    dataTenCountries = getTenArray(dataCountries, dataLength);
     return true;
   };
 
@@ -49,8 +64,13 @@ const MoreNewInfected = props => {
     return <Loading />;
   }
 
+  const handleFilterChange = e => {
+    addFilter(e.target.value);
+  };
+
   return (
     <div>
+      <FilterNewInfected onChange={handleFilterChange} value={filter} />
       <div className="divCateg">
         <table className="table">
           <thead className="thead-light">
@@ -77,9 +97,12 @@ MoreNewInfected.propTypes = {
   date: PropTypes.string.isRequired,
   resp: PropTypes.arrayOf(object).isRequired,
   fetchSummary: PropTypes.instanceOf(Function).isRequired,
+  filter: PropTypes.string.isRequired,
+  addFilter: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = () => ({
+const mapDispatchToProps = dispatch => ({
+  addFilter: filter => dispatch(updateFilter(filter)),
   fetchSummary,
 });
 
@@ -89,6 +112,7 @@ const mapStateToProps = state => ({
   loading: getProductsLoading(state.summary),
   resp: getProducts(state.summary).Countries,
   date: getProducts(state.summary).Date,
+  filter: state.filter.filter,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoreNewInfected);

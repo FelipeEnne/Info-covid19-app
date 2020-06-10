@@ -22,6 +22,14 @@ export function sortNewConfirmed(array) {
   array.sort((a, b) => a.NewConfirmed - b.NewConfirmed);
 }
 
+export function sortNewDeaths(array) {
+  array.sort((a, b) => a.NewDeaths - b.NewDeaths);
+}
+
+export function sortNewRecovered(array) {
+  array.sort((a, b) => a.NewRecovered - b.NewRecovered);
+}
+
 export function getTenArray(array, len) {
   const arr = [];
   let count = len;
