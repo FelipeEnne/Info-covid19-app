@@ -1,12 +1,12 @@
 import React from 'react';
-import './App.css';
 import { Route, Switch } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 import Summary from '../containers/Summary';
 import MoreInfected from '../containers/MoreInfected';
 import MoreNewInfected from '../containers/MoreNewInfected';
 import SearchCountry from '../containers/SearchCountry';
 import NavbarApp from './NavbarApp';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const App = () => (

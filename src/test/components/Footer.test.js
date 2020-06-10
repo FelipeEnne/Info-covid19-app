@@ -1,7 +1,7 @@
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import FooterApp from '../../containers/FooterApp';
+import FooterApp from '../../components/FooterApp';
 
 Enzyme.configure({ adapter: new Adapter() });
 const value = 'string';

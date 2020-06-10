@@ -1,7 +1,7 @@
 import React from 'react';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import CountryNewTag from '../../containers/NewCountriesCases/CountryNewTag';
+import CountryNewTag from '../../components/CountryNewTag';
 
 Enzyme.configure({ adapter: new Adapter() });
 const value = {};
