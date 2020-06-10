@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchSummary from '../../actions/fechSummary';
+import fetchSummary from '../actions/fechSummary';
 import {
   getProductsError,
   getProductsLoading,
@@ -10,9 +10,9 @@ import {
   getTenArray,
   makeid,
   returnData,
-} from '../helpers';
-import CountryTag from './CountryTag';
-import FooterApp from '../FooterApp';
+} from '../helper/helpers';
+import CountryTag from '../components/CountryTag';
+import FooterApp from '../components/FooterApp';
 
 const MoreInfected = props => {
   // console.log(props);

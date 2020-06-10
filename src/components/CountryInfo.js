@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { numberFormat } from '../helpers';
+import { numberFormat } from '../helper/helpers';
 
 const CountryInfo = ({ value }) => (
   <div>
@@ -16,7 +16,7 @@ const CountryInfo = ({ value }) => (
         <tr>
           <td>{numberFormat(value.TotalConfirmed)}</td>
           <td>{numberFormat(value.TotalDeaths)}</td>
-          <td>{numberFormat(value.TotalConfirmed)}</td>
+          <td>{numberFormat(value.TotalRecovered)}</td>
         </tr>
       </tbody>
     </table>

@@ -7,7 +7,7 @@ import {
   getProductsLoading,
   getProducts,
   numberFormat,
-} from './helpers';
+} from '../helper/helpers';
 
 const Summary = props => {
   const { fetchSummary, loading, resp } = props;

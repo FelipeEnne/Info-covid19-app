@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import fetchSummary from '../../actions/fechSummary';
+import fetchSummary from '../actions/fechSummary';
 import {
   getProductsError,
   getProductsLoading,
   getProducts,
   returnData,
-} from '../helpers';
-import selectCountry from '../../actions/selectCountry';
-import CountryInfo from './CountryInfo';
-import FooterApp from '../FooterApp';
+  capitalize,
+} from '../helper/helpers';
+import selectCountry from '../actions/selectCountry';
+import CountryInfo from '../components/CountryInfo';
+import FooterApp from '../components/FooterApp';
 
 
 const SeachCountry = props => {
@@ -29,7 +30,7 @@ const SeachCountry = props => {
   let c;
 
   const handleClick = () => {
-    const t = document.getElementById('nameCountry').value;
+    const t = capitalize(document.getElementById('nameCountry').value);
     if (t !== '') {
       c = resp.Countries.find(e => e.Country === t);
       if (caches === undefined) {
