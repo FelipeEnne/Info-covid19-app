@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import fetchSummary from '../actions/fechSummary';
 import {
   getProductsError,
@@ -8,6 +8,8 @@ import {
   getProducts,
   numberFormat,
 } from '../helper/helpers';
+import SummaryInfo from '../components/SummaryInfo';
+import Loading from '../components/loading';
 
 const Summary = props => {
   const { fetchSummary, loading, resp } = props;
@@ -16,29 +18,13 @@ const Summary = props => {
     fetchSummary();
   }, [fetchSummary]);
 
-  let dataGlobal = {};
-  let TotalConfirmed;
-  let TotalDeaths;
-  let TotalRecovered;
-
   const shouldComponentRender = () => {
-    if (loading === true || resp === {}) return false;
-    dataGlobal = resp.Global;
-    if (dataGlobal === undefined) return false;
-    TotalConfirmed = numberFormat(dataGlobal.TotalConfirmed);
-    TotalDeaths = numberFormat(dataGlobal.TotalDeaths);
-    TotalRecovered = numberFormat(dataGlobal.TotalRecovered);
+    if (loading === true || resp.length === 0) return false;
     return true;
   };
 
-  const loadDiv = () => (
-    <div>
-      Loading ...
-    </div>
-  );
-
   if (!shouldComponentRender()) {
-    return loadDiv;
+    return <Loading />;
   }
 
   return (
@@ -53,13 +39,11 @@ const Summary = props => {
                 <th scope="col">Total Recovered</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>{TotalConfirmed}</td>
-                <td>{TotalDeaths}</td>
-                <td>{TotalRecovered}</td>
-              </tr>
-            </tbody>
+            <SummaryInfo
+              TotalConfirmed={numberFormat(resp[0].TotalConfirmed)}
+              TotalDeaths={numberFormat(resp[0].TotalDeaths)}
+              TotalRecovered={numberFormat(resp[0].TotalRecovered)}
+            />
           </table>
         </div>
       </div>
@@ -70,8 +54,7 @@ const Summary = props => {
 
 Summary.propTypes = {
   loading: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  resp: PropTypes.object.isRequired,
+  resp: PropTypes.arrayOf(object).isRequired,
   fetchSummary: PropTypes.instanceOf(Function).isRequired,
 };
 
@@ -86,7 +69,7 @@ const mapStateToProps = state => {
     {
       error: getProductsError(summary),
       loading: getProductsLoading(summary),
-      resp: getProducts(summary),
+      resp: [getProducts(summary).Global],
     }
   );
 };

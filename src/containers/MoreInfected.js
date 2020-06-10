@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import fetchSummary from '../actions/fechSummary';
 import {
   getProductsError,
@@ -13,39 +13,41 @@ import {
 } from '../helper/helpers';
 import CountryTag from '../components/CountryTag';
 import FooterApp from '../components/FooterApp';
+import Loading from '../components/loading';
+
 
 const MoreInfected = props => {
   // console.log(props);
-  const { fetchSummary, loading, resp } = props;
+  const {
+    fetchSummary,
+    loading,
+    resp,
+    date,
+  } = props;
 
   useEffect(() => {
     fetchSummary();
   }, [fetchSummary]);
 
-  let dataCountries = {};
+  let dataCountries;
   let dataLength = 0;
   let dataTenCountries = [];
   let data = '';
 
   const shouldComponentRender = () => {
-    if (loading === true || resp === {}) return false;
-    dataCountries = resp.Countries;
+    if (loading === true || resp.length === 0) return false;
+    dataCountries = resp;
     if (dataCountries === undefined) return false;
     sortTotalConfirmed(dataCountries);
     dataLength = dataCountries.length - 1;
-    data = returnData(resp.Date);
+    data = returnData(date);
     dataTenCountries = getTenArray(dataCountries, dataLength);
     return true;
   };
 
-  const loadDiv = () => (
-    <div>
-      Loading ...
-    </div>
-  );
 
   if (!shouldComponentRender()) {
-    return loadDiv;
+    return <Loading />;
   }
 
   return (
@@ -73,8 +75,8 @@ const MoreInfected = props => {
 
 MoreInfected.propTypes = {
   loading: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  resp: PropTypes.object.isRequired,
+  date: PropTypes.string.isRequired,
+  resp: PropTypes.arrayOf(object).isRequired,
   fetchSummary: PropTypes.instanceOf(Function).isRequired,
 };
 
@@ -86,7 +88,8 @@ const mapDispatchToProps = () => ({
 const mapStateToProps = state => ({
   error: getProductsError(state.summary),
   loading: getProductsLoading(state.summary),
-  resp: getProducts(state.summary),
+  resp: getProducts(state.summary).Countries,
+  date: getProducts(state.summary).Date,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoreInfected);

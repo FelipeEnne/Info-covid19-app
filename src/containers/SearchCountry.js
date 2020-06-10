@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import fetchSummary from '../actions/fechSummary';
 import {
   getProductsError,
@@ -12,13 +12,16 @@ import {
 import selectCountry from '../actions/selectCountry';
 import CountryInfo from '../components/CountryInfo';
 import FooterApp from '../components/FooterApp';
+import Loading from '../components/loading';
 
 
 const SeachCountry = props => {
+  // console.log(props);
   const {
     fetchSummary,
     loading,
     resp,
+    date,
     selectCountry,
     country,
   } = props;
@@ -32,8 +35,8 @@ const SeachCountry = props => {
   const handleClick = () => {
     const t = capitalize(document.getElementById('nameCountry').value);
     if (t !== '') {
-      c = resp.Countries.find(e => e.Country === t);
-      if (caches === undefined) {
+      c = resp.find(e => e.Country === t);
+      if (c === undefined) {
         // eslint-disable-next-line no-console
         console.error('Your country was not found');
       }
@@ -49,24 +52,18 @@ const SeachCountry = props => {
 
   const shouldComponentRender = () => {
     if (loading === true || resp === {}) return false;
-    dataCountries = resp.Countries;
+    dataCountries = resp;
     if (dataCountries === undefined) return false;
-    data = returnData(resp.Date);
+    data = returnData(date);
     return true;
   };
 
-  const loadDiv = () => (
-    <div>
-      Loading ...
-    </div>
-  );
-
   if (!shouldComponentRender()) {
-    return loadDiv;
+    return <Loading />;
   }
 
 
-  if (country.country !== undefined) {
+  if (country[0].country !== undefined) {
     return (
       <div>
         <div className="searchCountry">
@@ -81,7 +78,7 @@ const SeachCountry = props => {
           </form>
         </div>
         <div className="container">
-          <CountryInfo value={country.country} />
+          <CountryInfo value={country[0].country} />
         </div>
         <FooterApp value={data} />
       </div>
@@ -109,10 +106,9 @@ const SeachCountry = props => {
 
 SeachCountry.propTypes = {
   loading: PropTypes.bool.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  resp: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  country: PropTypes.object.isRequired,
+  resp: PropTypes.arrayOf(object).isRequired,
+  date: PropTypes.string.isRequired,
+  country: PropTypes.arrayOf(object).isRequired,
   fetchSummary: PropTypes.instanceOf(Function).isRequired,
   selectCountry: PropTypes.instanceOf(Function).isRequired,
 };
@@ -127,8 +123,9 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = state => ({
   error: getProductsError(state.summary),
   loading: getProductsLoading(state.summary),
-  resp: getProducts(state.summary),
-  country: state.country,
+  resp: getProducts(state.summary).Countries,
+  date: getProducts(state.summary).Date,
+  country: [state.country],
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeachCountry);

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Summary from '../containers/Summary';
 import MoreInfected from '../containers/MoreInfected';
 import MoreNewInfected from '../containers/MoreNewInfected';
@@ -11,15 +11,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const App = () => (
   <div className="App">
-    <Router>
-      <NavbarApp />
-      <Summary />
-      <Switch>
-        <Route path="/" component={MoreInfected} exact />
-        <Route path="/new" component={MoreNewInfected} />
-        <Route path="/seach" component={SearchCountry} />
-      </Switch>
-    </Router>
+    <NavbarApp />
+    <Summary />
+    <Switch>
+      <Route path="/" component={MoreInfected} exact />
+      <Route path="/new" component={MoreNewInfected} />
+      <Route path="/seach" component={SearchCountry} />
+    </Switch>
   </div>
 );
 
