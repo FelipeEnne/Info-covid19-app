@@ -44,7 +44,7 @@ A project is based on a catalog of statistics. The goal is a catalog that you ca
 - GitHub
 - Netlify
 
-### Run This App
+## Run This App
 
 - Clone or Download
 - Extract the project if you Download
