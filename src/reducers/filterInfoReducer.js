@@ -1,22 +1,22 @@
-
 const initialState = {
-  pending: false,
-  categories: [],
+  loading: false,
+  res: [],
   error: '',
+  filter: 'Total Confirmed',
 };
 
-export const categoriesReducer = (state = initialState, action) => {
+const filterInfoReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'FETCH_PRODUCTS_PENDING':
       return {
         ...state,
         pending: true,
       };
-    case 'FETCH_CATEGORIES_SUCCESS':
+    case 'FETCH_PRODUCTS_SUCCESS':
       return {
         ...state,
         pending: false,
-        categories: action.categories,
+        products: action.products,
       };
     case 'FETCH_PRODUCTS_ERROR':
       return {
@@ -24,9 +24,14 @@ export const categoriesReducer = (state = initialState, action) => {
         pending: false,
         error: action.error,
       };
+    case 'UPDATE_FILTER':
+      return {
+        ...state,
+        filter: action.filter,
+      };
     default:
       return state;
   }
 };
 
-export default categoriesReducer;
+export default filterInfoReducer;
