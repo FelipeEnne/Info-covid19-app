@@ -1,7 +1,7 @@
 # Registro de atualizações de segurança e dependências
 
 **Projeto:** Info-covid19-app  
-**Última atualização:** 2026-06-25
+**Última atualização:** 2026-06-24
 
 ---
 
@@ -247,6 +247,178 @@ Com um único lockfile (`package-lock.json`), alertas duplicados do `yarn.lock` 
 ```bash
 git add package.json package-lock.json docs/DEPENDENCY_UPGRADE_PLAN.md docs/SECURITY_UPDATES.md
 git commit -m "fix: update low-risk dependencies"
+```
+
+*(Commit não executado automaticamente — aguardando solicitação do usuário.)*
+
+---
+
+## Lote 3 — Overrides transitivos (CRA 5) — Aplicado
+
+### Gerenciador de pacotes
+
+| Item | Valor |
+|------|-------|
+| Gerenciador | **npm** |
+| Lock mantido | `package-lock.json` apenas |
+| `npm audit fix --force` | **Não usado** (instalaria `react-scripts@0.0.0`) |
+
+### Vulnerabilidades analisadas (Dependabot / npm audit)
+
+| Pacote | Severidade | Tipo | Cadeia principal |
+|--------|------------|------|------------------|
+| `nth-check` | High | Transitiva | `react-scripts` → `@svgr/webpack` → `svgo` → `css-select` |
+| `serialize-javascript` | High (+ Moderate DoS) | Transitiva | `css-minimizer-webpack-plugin`, `rollup-plugin-terser` |
+| `postcss` | Moderate | Transitiva | `resolve-url-loader@4` → `postcss@7.0.39` |
+| `js-yaml` | Moderate | Transitiva | Jest (`@istanbuljs/load-nyc-config`) + `svgo` |
+| `uuid` | Moderate | Transitiva | `webpack-dev-server` → `sockjs` |
+| `webpack-dev-server` | Moderate | Transitiva | `react-scripts` (dev only) |
+
+**Nenhum** dos pacotes acima é dependência direta em `package.json`.
+
+### Overrides npm aplicados (estado final)
+
+```json
+"overrides": {
+  "@tootallnate/once": "2.0.1",
+  "underscore": "1.13.8",
+  "serialize-javascript": "7.0.6",
+  "nth-check": "2.0.1",
+  "js-yaml": "4.2.0",
+  "resolve-url-loader": "5.0.0",
+  "uuid": "11.1.1"
+}
+```
+
+| Override | Versão anterior | Motivo |
+|----------|----------------|--------|
+| `serialize-javascript` | 6.0.2 (insuficiente) | RCE exige ≥7.0.3; DoS exige ≥7.0.5; sem backport na linha 6.x |
+| `nth-check` | 1.0.2 (aninhado em svgo) | ReDoS; `react-scripts` não atualiza `@svgr/webpack` |
+| `js-yaml` | 3.14.2 | DoS em merge aliases; advisory afeta ≤4.1.1; 4.2.0 já usado pelo eslint |
+| `resolve-url-loader` | 4.0.0 | v5 usa PostCSS 8; elimina cópia vulnerável PostCSS 7 |
+| `uuid` | 8.3.2 | Buffer bounds check; uso interno de `sockjs` em dev |
+| `webpack-dev-server` | — | **Não aplicado** — ver fallback abaixo |
+
+### Fallback: `webpack-dev-server@5.2.5`
+
+Override de `webpack-dev-server` para 5.2.5 foi testado e **rejeitado**:
+
+```text
+Invalid options object. Dev Server has been initialized using an options object
+that does not match the API schema.
+- options has an unknown property 'onAfterSetupMiddleware'
+```
+
+`react-scripts@5.0.1` usa APIs removidas no WDS 5. Correção exigiria eject, fork do CRA ou migração para Vite.
+
+### Comandos executados
+
+```bash
+npm audit
+npm outdated
+npm ls nth-check serialize-javascript webpack-dev-server uuid postcss js-yaml
+# overrides aplicados em package.json
+npm audit fix
+npm install
+npm audit
+npm ls nth-check serialize-javascript webpack-dev-server uuid postcss js-yaml
+CI=true npm test -- --watchAll=false
+npm run build
+npm start   # smoke test dev server
+```
+
+### Resultado do audit
+
+| Métrica | Antes (Lote 2) | Depois (Lote 3) |
+|---------|---------------:|----------------:|
+| Total | 32 | **2** |
+| High | 4 | **0** |
+| Moderate | 28 | **2** |
+| Critical | 0 | **0** |
+
+### Pacotes vulneráveis citados pelo Dependabot — status Lote 3
+
+| Pacote | Severidade | Status |
+|--------|------------|--------|
+| `nth-check` | High | **Corrigido** (override 2.0.1) |
+| `serialize-javascript` | High | **Corrigido** (override 7.0.6) |
+| `postcss` | Moderate | **Corrigido** (override `resolve-url-loader@5.0.0` → PostCSS 8.5.15) |
+| `js-yaml` | Moderate | **Corrigido** (override 4.2.0) |
+| `uuid` | Moderate | **Corrigido** (override 11.1.1) |
+| `webpack-dev-server` | Moderate | **Pendente** (dev only; WDS 5 incompatível com CRA 5) |
+
+### Vulnerabilidades restantes (2 moderate, dev only)
+
+Ambas em `webpack-dev-server@4.15.2` via `react-scripts`:
+
+- [GHSA-79cf-xcqc-c78w](https://github.com/advisories/GHSA-79cf-xcqc-c78w) — exposição de código-fonte em origem HTTP
+- [GHSA-4v9v-hfq4-rm2v](https://github.com/advisories/GHSA-4v9v-hfq4-rm2v) / [GHSA-9jgg-88mc-972h](https://github.com/advisories/GHSA-9jgg-88mc-972h) — origem cruzada / HMR WebSocket
+
+**Mitigação:** não expor `npm start` em rede pública; usar HTTPS no dev se necessário; risco não afeta `npm run build` nem produção.
+
+### Resultado dos testes
+
+```text
+Ambiente: Node 22, CI=true
+Comando: npm test -- --watchAll=false
+
+Test Suites: 7 passed, 7 total
+Tests:       18 passed, 18 total
+```
+
+### Resultado do build
+
+```text
+Comando: npm run build
+
+Compiled successfully.
+```
+
+### Resultado do dev server (`npm start`)
+
+```text
+Comando: npm start
+
+Compiled successfully!
+Local: http://localhost:3000
+```
+
+Com WDS 4 (padrão CRA). Avisos de depreciação `onAfterSetupMiddleware` são esperados.
+
+### Riscos de breaking changes
+
+| Override | Risco | Validação |
+|----------|-------|-----------|
+| `serialize-javascript@7` | Baixo (build) | `npm run build` OK |
+| `nth-check@2` | Baixo (SVG build) | `npm run build` OK |
+| `resolve-url-loader@5` | Médio (CSS/Sass) | `npm run build` OK |
+| `js-yaml@4` | Baixo (Jest/coverage) | `npm test` OK |
+| `uuid@11` | Baixo (dev/sockjs) | `npm start` OK |
+
+### Arquivos alterados
+
+- `package.json` — bloco `overrides` atualizado
+- `package-lock.json` — regenerado por `npm install`
+- `docs/SECURITY_UPDATES.md` — este relatório
+
+### Próximos passos recomendados
+
+1. Atualizar CI para Node 20 LTS + jobs `npm test` / `npm run build`
+2. Adicionar `"engines": { "node": ">=20" }` (requerido por `serialize-javascript@7`)
+3. Migrar para Vite ou eject para corrigir `webpack-dev-server` (dev only)
+4. Planejar `react-router-dom` 5 → 6
+
+### Dependabot
+
+Com um único lockfile (`package-lock.json`), alertas convergem após merge. Se o Dependabot estiver **pausado**, retoma após merge de um PR do Dependabot ou reativação manual em **Settings → Security → Dependabot**.
+
+---
+
+## Histórico de commits sugeridos (Lote 3)
+
+```bash
+git add package.json package-lock.json docs/SECURITY_UPDATES.md
+git commit -m "fix: resolve transitive dependency vulnerabilities via npm overrides"
 ```
 
 *(Commit não executado automaticamente — aguardando solicitação do usuário.)*
