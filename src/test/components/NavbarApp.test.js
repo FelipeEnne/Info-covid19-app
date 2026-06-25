@@ -1,30 +1,29 @@
 import React from 'react';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import NavbarApp from '../../components/NavbarApp';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-const setup = () => {
-  const component = shallow(<NavbarApp />);
-  return component;
-};
+const setup = () => render(
+  <MemoryRouter>
+    <NavbarApp />
+  </MemoryRouter>,
+);
 
 describe('NavbarApp Component', () => {
-  let component;
+  let container;
   beforeEach(() => {
-    component = setup();
+    ({ container } = setup());
   });
 
   it('should have 1 div', () => {
-    expect(component.find('div').length).toBe(1);
+    expect(container.querySelectorAll('div')).toHaveLength(1);
   });
 
   it('should have 1 h2', () => {
-    expect(component.find('h2').length).toBe(1);
+    expect(container.querySelectorAll('h2')).toHaveLength(1);
   });
 
   it('should have 3 h3', () => {
-    expect(component.find('h3').length).toBe(3);
+    expect(container.querySelectorAll('h3')).toHaveLength(3);
   });
 });

@@ -2,7 +2,7 @@
 
 Documento gerado a partir do diagnóstico do projeto Info-covid19-app (CRA 2 + React 16 + npm).
 
-**Última atualização:** 2026-06-24
+**Última atualização:** 2026-06-25
 
 ---
 
@@ -11,13 +11,13 @@ Documento gerado a partir do diagnóstico do projeto Info-covid19-app (CRA 2 + R
 | Aspecto | Valor |
 |---------|-------|
 | Tipo | SPA frontend-only |
-| Framework | React 16.14.0 |
+| Framework | React 18.3.1 |
 | Estado | Redux 4 + redux-thunk + @reduxjs/toolkit 1.9.7 |
-| Roteamento | react-router-dom 5 |
-| UI | Bootstrap 4.6.2 + react-bootstrap 1 |
-| Build | Create React App (`react-scripts` 2.1.3) |
+| Roteamento | react-router-dom 5.3.4 |
+| UI | Bootstrap 4.6.2 + react-bootstrap 1.6.8 |
+| Build | Create React App (`react-scripts` 5.0.1) |
 | Linguagem | JavaScript (sem TypeScript) |
-| Testes | Enzyme 3 + @testing-library (7 suites) |
+| Testes | @testing-library/react 14 (7 suites; Enzyme removido) |
 | CI | `.github/linters.yml` — ESLint + Stylelint; Node 12.x (EOL) |
 
 ## Gerenciador de pacotes
@@ -117,48 +117,31 @@ Detalhes em [SECURITY_UPDATES.md](./SECURITY_UPDATES.md).
 
 ---
 
-## Lote Seguro 2 — Proposto (aguardando aprovação)
+## Lote Seguro 2 — Aplicado
 
-```text
-Lote seguro 2:
-- pacotes:
-  react-router-dom, react-bootstrap
-  + transitivas via npm audit fix (sem --force)
-- versões atuais:
-  react-router-dom 5.2.0, react-bootstrap 1.0.1
-- versões alvo:
-  react-router-dom 5.3.4, react-bootstrap 1.6.8
-  + patches transitivos (lodash, elliptic, follow-redirects, ws, @babel/*, etc.)
-- motivo:
-  Minor dentro da mesma major; npm audit fix corrige dezenas de transitivas sem react-scripts major
-- risco:
-  Médio — react-bootstrap 1.0→1.6 pode alterar estilos; audit fix pode alterar lockfile extensivamente
-- arquivos alterados:
-  package.json, package-lock.json
-- comandos:
-  npm install react-router-dom@5.3.4 react-bootstrap@1.6.8
-  npm audit fix
-  (NÃO usar npm audit fix --force)
-- validação:
-  SKIP_PREFLIGHT_CHECK=true CI=true npm test -- --watchAll=false
-  SKIP_PREFLIGHT_CHECK=true NODE_OPTIONS=--openssl-legacy-provider npm run build
-  npm audit
-  npx eslint src
-```
-
-**Expectativa:** redução parcial de vulnerabilidades (A confirmar contagem exata após aplicação). Maioria permanece até upgrade de `react-scripts`.
+Ver [SECURITY_UPDATES.md](./SECURITY_UPDATES.md) — incluído na migração CRA 5.
 
 ---
 
-## Ordem recomendada de migração (Grupo B)
+## CRA 5 + React 18 — Aplicado
 
-1. Node CI 12 → 20 LTS + `.github/linters.yml` (ubuntu-latest)
-2. `react-scripts` 2 → 5 (ou spike Vite)
-3. React 16 → 18 LTS
+```text
+Pacotes: react-scripts, react, react-dom, @testing-library/*, eslint 8
+Versões: 5.0.1, 18.3.1, 18.3.1, 14.x/6.x, 8.57.1
+Resultado: audit 241 → 32 vulns (0 critical); 7 test suites OK; build OK
+```
+
+---
+
+## Ordem recomendada de migração (Grupo B) — atualizada
+
+1. Node CI 12 → 20 LTS + `.github/linters.yml` (ubuntu-latest) — **pendente**
+2. ~~`react-scripts` 2 → 5~~ — **feito**
+3. ~~React 16 → 18 LTS~~ — **feito**
 4. react-router-dom 5 → 6
 5. Redux stack (redux 5 + RTK 2 + react-redux 9)
-6. ESLint 6 → 8+ e plugins Airbnb
-7. Substituir Enzyme por Testing Library
+6. ESLint Airbnb no build (opcional; build usa `react-app` apenas)
+7. ~~Substituir Enzyme por Testing Library~~ — **feito**
 8. Bootstrap 4 → 5 + react-bootstrap 2 (se necessário)
 9. Corrigir código quebrado; validar build/testes
 
@@ -266,17 +249,15 @@ Deve ser feito agora ou depois: DEPOIS de React 18
 
 ## Riscos gerais
 
-- **241 vulnerabilidades** persistem até upgrade de `react-scripts` (ou migração Vite)
-- **`npm audit fix --force` proibido** sem aprovação — instalaria react-scripts 5 + eslint 10 de uma vez
-- **Dois lockfiles** — resolvido: removido `yarn.lock`; npm é o único gerenciador
-- **CRA 2 + Node 22** exige workarounds temporários para build/test
+- **32 vulnerabilidades** restantes em transitivas do CRA 5 (js-yaml, nth-check, uuid/sockjs)
+- ~~**`npm audit fix --force` proibido**~~ — substituído por migração CRA 5 controlada (**aplicada**)
+- ~~**Dois lockfiles**~~ — resolvido: npm + `package-lock.json` apenas
+- ~~**CRA 2 + Node 22**~~ — resolvido com CRA 5
 
 ---
 
 ## Próximos passos
 
-1. Revisar e aprovar **Lote Seguro 2**
-2. Commit separado: `fix: update low-risk dependencies` (Lote 1)
-3. Planejar branch dedicada para **react-scripts 5** ou **Vite**
-4. Adicionar `npm test` e `npm run build` ao CI
-5. Decidir lockfile canônico (npm vs yarn) — **feito:** npm + `package-lock.json` apenas
+1. Atualizar CI para Node 20 + test/build jobs
+2. Planejar **react-router-dom 6**
+3. Commit: `fix: upgrade to CRA 5 and resolve dependency vulnerabilities`

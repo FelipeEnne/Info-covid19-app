@@ -1,24 +1,22 @@
 import React from 'react';
+import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import Summary from '../../containers/Summary';
 import store from '../../reducers/index';
 
-Enzyme.configure({ adapter: new Adapter() });
-
-const setup = () => {
-  const component = shallow((<Provider store={store}><Summary /></Provider>));
-  return component;
-};
+const setup = () => render(
+  <Provider store={store}>
+    <Summary />
+  </Provider>,
+);
 
 describe('Summary Component', () => {
-  let component;
+  let container;
   beforeEach(() => {
-    component = setup();
+    ({ container } = setup());
   });
 
-  it('should return empty', () => {
-    expect(component.find('div').length).toBe(0);
+  it('should show loading spinner while fetching', () => {
+    expect(container.querySelector('.spinner-border')).toBeInTheDocument();
   });
 });

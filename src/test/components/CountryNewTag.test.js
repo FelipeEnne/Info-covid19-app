@@ -1,31 +1,26 @@
 import React from 'react';
-import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { render } from '@testing-library/react';
 import CountryNewTag from '../../components/CountryNewTag';
 
-Enzyme.configure({ adapter: new Adapter() });
 const value = {};
 
-const setup = () => {
-  const component = shallow(<CountryNewTag value={value} />);
-  return component;
-};
+const setup = () => render(<CountryNewTag value={value} />);
 
 describe('CountryNewTag Component', () => {
-  let component;
+  let container;
   beforeEach(() => {
-    component = setup();
+    ({ container } = setup());
   });
 
   it('should have 1 tbody', () => {
-    expect(component.find('tbody').length).toBe(1);
+    expect(container.querySelectorAll('tbody')).toHaveLength(1);
   });
 
   it('should have 1 tr', () => {
-    expect(component.find('tr').length).toBe(1);
+    expect(container.querySelectorAll('tr')).toHaveLength(1);
   });
 
   it('should have 4 td', () => {
-    expect(component.find('td').length).toBe(4);
+    expect(container.querySelectorAll('td')).toHaveLength(4);
   });
 });
