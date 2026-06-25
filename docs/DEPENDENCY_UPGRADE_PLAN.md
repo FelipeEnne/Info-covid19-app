@@ -22,8 +22,7 @@ Documento gerado a partir do diagnóstico do projeto Info-covid19-app (CRA 2 + R
 
 ## Gerenciador de pacotes
 
-- **Primário:** npm (`package-lock.json`, lockfileVersion 2)
-- **Conflito:** `yarn.lock` também versionado — **A confirmar** qual lockfile a equipe usa em produção. Updates aplicados via npm; `yarn.lock` pode divergir.
+- **Primário:** npm (`package-lock.json`, lockfileVersion 2). `yarn.lock` foi removido — usar apenas npm.
 
 ## Node
 
@@ -135,7 +134,7 @@ Lote seguro 2:
 - risco:
   Médio — react-bootstrap 1.0→1.6 pode alterar estilos; audit fix pode alterar lockfile extensivamente
 - arquivos alterados:
-  package.json, package-lock.json (yarn.lock pode divergir)
+  package.json, package-lock.json
 - comandos:
   npm install react-router-dom@5.3.4 react-bootstrap@1.6.8
   npm audit fix
@@ -269,7 +268,7 @@ Deve ser feito agora ou depois: DEPOIS de React 18
 
 - **241 vulnerabilidades** persistem até upgrade de `react-scripts` (ou migração Vite)
 - **`npm audit fix --force` proibido** sem aprovação — instalaria react-scripts 5 + eslint 10 de uma vez
-- **Dois lockfiles** (npm + yarn) — risco de inconsistência
+- **Dois lockfiles** — resolvido: removido `yarn.lock`; npm é o único gerenciador
 - **CRA 2 + Node 22** exige workarounds temporários para build/test
 
 ---
@@ -280,4 +279,4 @@ Deve ser feito agora ou depois: DEPOIS de React 18
 2. Commit separado: `fix: update low-risk dependencies` (Lote 1)
 3. Planejar branch dedicada para **react-scripts 5** ou **Vite**
 4. Adicionar `npm test` e `npm run build` ao CI
-5. Decidir lockfile canônico (npm vs yarn)
+5. Decidir lockfile canônico (npm vs yarn) — **feito:** npm + `package-lock.json` apenas

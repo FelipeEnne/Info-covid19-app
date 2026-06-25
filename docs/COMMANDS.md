@@ -7,11 +7,7 @@ Referência rápida de comandos úteis para desenvolvimento, build, testes e lin
 ## Instalação de dependências
 
 ```bash
-# npm (recomendado — há package-lock.json)
 npm install
-
-# yarn (alternativa — há yarn.lock)
-yarn install
 ```
 
 ---

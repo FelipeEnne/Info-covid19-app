@@ -32,7 +32,6 @@ npm install redux-thunk@2.4.2 react-redux@7.2.9 redux@4.2.1 react@16.14.0 react-
 
 - `package.json` — ranges semver atualizados para refletir versões mínimas seguras
 - `package-lock.json` — lockfile npm atualizado (9 pacotes alterados na árvore)
-- `yarn.lock` — **revertido** (npm alterou o arquivo incidentalmente; lockfile canônico deste lote é `package-lock.json`)
 
 ### Resultado do audit
 

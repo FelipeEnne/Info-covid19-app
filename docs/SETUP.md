@@ -9,7 +9,7 @@ Guia para rodar o projeto localmente pela primeira vez.
 | Requisito | Versão recomendada | Observação |
 |-----------|-------------------|------------|
 | Node.js | 14.x – 16.x | CRA 2.x (`react-scripts` 2.1.3) pode falhar em Node 17+ sem flags legadas |
-| npm | 6.x ou superior | Yarn também funciona (há `yarn.lock` no repo) |
+| npm | 6.x ou superior | Gerenciador padrão (`package-lock.json`) |
 | Git | Qualquer versão recente | Para clonar o repositório |
 
 O CI do projeto usa **Node 12.x** (`.github/linters.yml`), que está fora de suporte. Para desenvolvimento local, prefira Node 14 ou 16.
@@ -33,12 +33,7 @@ cd Info-covid19-app
 npm install
 ```
 
-**Atenção — lockfiles duplos:** o repositório contém tanto `package-lock.json` (npm) quanto `yarn.lock` (yarn). Escolha **um** gerenciador e mantenha consistência:
-
-- Com npm: `npm install`
-- Com yarn: `yarn install`
-
-Não misture os dois no mesmo ambiente de desenvolvimento.
+Use **npm** — o repositório mantém apenas `package-lock.json`.
 
 ### 3. Subir o servidor de desenvolvimento
 
@@ -132,9 +127,9 @@ npm start
 
 O README referencia `./public/assets/img/` (screenshots), mas essa pasta **não existe** no repositório atual. Isso não afeta o funcionamento da app.
 
-### Conflito npm vs yarn
+### Gerenciador de pacotes
 
-Se `npm install` e `yarn install` forem executados alternadamente, podem surgir inconsistências. Escolha um gerenciador e remova o lockfile do outro em uma futura limpeza.
+O projeto usa **apenas npm** (`package-lock.json`). Não use `yarn install` — o `yarn.lock` foi removido.
 
 ### Porta 3000 ocupada
 

@@ -106,12 +106,10 @@ Classificação: **Alta prioridade** | **Média prioridade** | **Baixa prioridad
 - **Sugestão:** Usar `value.Slug` ou `value.CountryCode` como key.
 - **Arquivos:** `src/containers/MoreInfected.js`, `MoreNewInfected.js`
 
-### Lockfiles duplos (npm + yarn)
+### Lockfiles duplos (npm + yarn) — resolvido
 
-- **Problema:** `package-lock.json` e `yarn.lock` coexistem.
-- **Impacto:** Inconsistência de versões entre desenvolvedores.
-- **Sugestão:** Escolher um gerenciador e remover o lockfile do outro.
-- **Arquivos:** raiz do projeto
+- **Problema:** `package-lock.json` e `yarn.lock` coexistiam.
+- **Resolução:** `yarn.lock` removido; padronizado npm + `package-lock.json`.
 
 ### Sem formatador de código (Prettier)
 
