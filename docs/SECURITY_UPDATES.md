@@ -1,7 +1,7 @@
 # Registro de atualizações de segurança e dependências
 
 **Projeto:** Info-covid19-app  
-**Última atualização:** 2026-06-24
+**Última atualização:** 2026-08-06
 
 ---
 
@@ -419,6 +419,151 @@ Com um único lockfile (`package-lock.json`), alertas convergem após merge. Se 
 ```bash
 git add package.json package-lock.json docs/SECURITY_UPDATES.md
 git commit -m "fix: resolve transitive dependency vulnerabilities via npm overrides"
+```
+
+*(Commit não executado automaticamente — aguardando solicitação do usuário.)*
+
+---
+
+## Lote 4 — Overrides transitivos (Dependabot Jul/Ago 2026) — Aplicado
+
+### Gerenciador de pacotes
+
+| Item | Valor |
+|------|-------|
+| Gerenciador | **npm** |
+| Lock mantido | `package-lock.json` apenas |
+| `npm audit fix --force` | **Não usado** (instalaria `react-scripts@0.0.0`) |
+
+### Vulnerabilidades analisadas (Dependabot / npm audit)
+
+| Pacote | Severidade | Alertas | Tipo |
+|--------|------------|---------|------|
+| `shell-quote` | High | #374 | Transitiva (`react-dev-utils`, `launch-editor`) |
+| `svgo` | High | #371 | Transitiva (`@svgr/plugin-svgo`, `postcss-svgo`) |
+| `brace-expansion` | High | #377, #379 | Transitiva (`minimatch` 3.x e 5.x) |
+| `js-yaml` | High | #375 | Transitiva (override Lote 3 `4.2.0` insuficiente) |
+| `fast-uri` | High | #372, #373, #380 | Transitiva (`ajv` → schema-utils) |
+| `postcss` | High | #378 | Transitiva (cópia `8.5.15` vulnerável a path traversal) |
+| `body-parser` | Low | #376 | Transitiva (`express` via `webpack-dev-server`) |
+| `webpack-dev-server` | Moderate | #209, #211, #340, #364, #369, #370 | Transitiva (`react-scripts`; **sem fix CRA-compatível**) |
+
+### Overrides npm aplicados (estado final)
+
+```json
+"overrides": {
+  "@tootallnate/once": "2.0.1",
+  "underscore": "1.13.8",
+  "serialize-javascript": "7.0.6",
+  "nth-check": "2.0.1",
+  "js-yaml": "4.3.1",
+  "resolve-url-loader": "5.0.0",
+  "uuid": "11.1.1",
+  "shell-quote": "1.10.0",
+  "fast-uri": "3.1.5",
+  "postcss": "8.5.26",
+  "body-parser": "1.20.6",
+  "svgo": "2.8.3",
+  "minimatch@3": { "brace-expansion": "1.1.18" },
+  "minimatch@5": { "brace-expansion": "2.1.4" }
+}
+```
+
+| Override | Versão anterior | Motivo |
+|----------|----------------|--------|
+| `js-yaml` | 4.2.0 | Merge-key / omap DoS; patched em ≥4.3.1 |
+| `shell-quote` | 1.8.4 | DoS O(n²) em `parse()`; patched ≥1.9.0 |
+| `fast-uri` | 3.1.2 | Host confusion (IDN / backslash); patched ≥3.1.5 |
+| `postcss` | 8.5.15 | Path traversal em source map; patched ≥8.5.23 → 8.5.26 |
+| `body-parser` | 1.20.5 | DoS com `limit` inválido; patched ≥1.20.6 |
+| `svgo` | 1.3.2 / 2.8.2 | `removeScripts` incompleto; patched 2.8.3 (global OK no build) |
+| `brace-expansion` (via minimatch) | 1.1.15 / 2.1.1 | DoS expansion; 1.1.18 e 2.1.4 |
+
+### Comandos executados
+
+```bash
+npm install
+npm audit
+npm ls shell-quote svgo brace-expansion js-yaml fast-uri postcss body-parser webpack-dev-server
+CI=true npm test -- --watchAll=false
+npm run build
+BROWSER=none npm start   # smoke test
+```
+
+### Resultado do audit
+
+| Métrica | Antes (pré-Lote 4) | Depois (Lote 4) |
+|---------|-------------------:|----------------:|
+| Total | 11 | **2** |
+| High | 9 | **0** |
+| Moderate | 1+ | **2** (só WDS) |
+| Critical | 0 | **0** |
+| Low | 1 | **0** |
+
+### Pacotes citados pelo Dependabot — status Lote 4
+
+| Pacote | Status |
+|--------|--------|
+| `shell-quote` | **Corrigido** (override 1.10.0) |
+| `svgo` | **Corrigido** (override 2.8.3; `@svgr` unificado) |
+| `brace-expansion` | **Corrigido** (1.1.18 / 2.1.4 via minimatch) |
+| `js-yaml` | **Corrigido** (override 4.3.1) |
+| `fast-uri` | **Corrigido** (override 3.1.5) |
+| `postcss` | **Corrigido** (override 8.5.26) |
+| `body-parser` | **Corrigido** (override 1.20.6) |
+| `webpack-dev-server` | **Pendente** (dev only; WDS 5 incompatível com CRA 5) |
+
+### Vulnerabilidades restantes (2 moderate, dev only)
+
+Mesmas do Lote 3 — `webpack-dev-server@4.15.2` via `react-scripts`. Override para 5.x rejeitado (API `onAfterSetupMiddleware`).
+
+**Mitigação:** não expor `npm start` em rede pública; risco não afeta `npm run build` nem produção.
+
+**Ação GitHub (pós-merge):** dismiss alertas #209, #211, #340, #364, #369, #370 com *Risk is tolerable to this project*; Refresh Dependabot alerts; retomar updates (merge PR Dependabot ou Settings → Security → Dependabot).
+
+### Resultado dos testes
+
+```text
+Ambiente: Node 22, CI=true
+Comando: npm test -- --watchAll=false
+
+Test Suites: 7 passed, 7 total
+Tests:       18 passed, 18 total
+```
+
+### Resultado do build
+
+```text
+Comando: npm run build
+
+Compiled successfully.
+```
+
+### Resultado do dev server (`npm start`)
+
+```text
+Compiled successfully!
+```
+
+WDS 4 sobe normalmente com `svgo@2.8.3` global.
+
+### Arquivos alterados
+
+- `package.json` — bloco `overrides` estendido (Lote 4)
+- `package-lock.json` — regenerado por `npm install`
+- `docs/SECURITY_UPDATES.md` — este relatório
+
+### Próximos passos recomendados
+
+1. Merge + dismiss alertas WDS no GitHub + retomar Dependabot
+2. Migrar para Vite ou eject para eliminar residual `webpack-dev-server`
+3. Atualizar CI para Node 20 LTS + jobs `npm test` / `npm run build`
+
+### Histórico de commits sugeridos (Lote 4)
+
+```bash
+git add package.json package-lock.json docs/SECURITY_UPDATES.md
+git commit -m "fix: patch transitive Dependabot vulns via npm overrides (lote 4)"
 ```
 
 *(Commit não executado automaticamente — aguardando solicitação do usuário.)*
