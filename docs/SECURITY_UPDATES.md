@@ -1,7 +1,7 @@
 # Registro de atualizações de segurança e dependências
 
 **Projeto:** Info-covid19-app  
-**Última atualização:** 2026-08-06
+**Última atualização:** 2026-09-02
 
 ---
 
@@ -564,6 +564,132 @@ WDS 4 sobe normalmente com `svgo@2.8.3` global.
 ```bash
 git add package.json package-lock.json docs/SECURITY_UPDATES.md
 git commit -m "fix: patch transitive Dependabot vulns via npm overrides (lote 4)"
+```
+
+*(Commit não executado automaticamente — aguardando solicitação do usuário.)*
+
+---
+
+## Lote 5 — Overrides transitivos (Dependabot Set 2026) — Aplicado
+
+### Gerenciador de pacotes
+
+| Item | Valor |
+|------|-------|
+| Gerenciador | **npm** |
+| Lock mantido | `package-lock.json` apenas |
+| `npm audit fix --force` | **Não usado** (instalaria `react-scripts@0.0.0`) |
+
+### Vulnerabilidades analisadas (Dependabot)
+
+| Pacote | Severidade | Alertas | Tipo |
+|--------|------------|---------|------|
+| `browserslist` | High | #382, #383 | Transitiva (`react-scripts`, Autoprefixer, Babel) |
+| `fast-uri` | High | #386, #387, #388, #389 | Transitiva (`ajv` → schema-utils); override Lote 4 `3.1.5` insuficiente |
+| `qs` | Moderate | #384, #385 | Transitiva (`express`/`body-parser` via `webpack-dev-server`) |
+
+### Overrides npm aplicados (estado final)
+
+```json
+"overrides": {
+  "@tootallnate/once": "2.0.1",
+  "underscore": "1.13.8",
+  "serialize-javascript": "7.0.6",
+  "nth-check": "2.0.1",
+  "js-yaml": "4.3.1",
+  "resolve-url-loader": "5.0.0",
+  "uuid": "11.1.1",
+  "shell-quote": "1.10.0",
+  "browserslist": "4.28.8",
+  "fast-uri": "3.1.7",
+  "qs": "6.16.0",
+  "postcss": "8.5.26",
+  "body-parser": "1.20.6",
+  "svgo": "2.8.3",
+  "nanoid": "3.3.18",
+  "minimatch@3": { "brace-expansion": "1.1.18" },
+  "minimatch@5": { "brace-expansion": "2.1.4" }
+}
+```
+
+| Override | Versão anterior | Motivo |
+|----------|----------------|--------|
+| `browserslist` | 4.28.4 | Prototype write / crash em `normalizeStats` e OOM no cache; patched ≥4.28.7 → 4.28.8 |
+| `fast-uri` | 3.1.5 | Host confusion (IDN scheme-relative, percent-encoded scheme) e SSRF (IPv6 / percent-decoding); patched ≥3.1.6 → 3.1.7 (também cobre port injection e IP-literal brackets) |
+| `qs` | 6.15.3 | DoS via `isBuffer` não callable e bypass de `arrayLimit` em bracket+comma; patched ≥6.16.0. Override necessário: `express` pede `qs ~6.15.1` |
+
+### Comandos executados
+
+```bash
+npm install
+npm audit
+npm ls browserslist fast-uri qs
+CI=true npm test -- --watchAll=false
+npm run build
+```
+
+### Resultado do audit
+
+| Métrica | Antes (pré-Lote 5) | Depois (Lote 5) |
+|---------|-------------------:|----------------:|
+| Total | 8 alertas Dependabot | **2** (npm audit) |
+| High | 6 | **0** |
+| Moderate | 2 | **2** (só WDS) |
+| Critical | 0 | **0** |
+| Low | 0 | **0** |
+
+### Pacotes citados pelo Dependabot — status Lote 5
+
+| Pacote | Status |
+|--------|--------|
+| `browserslist` | **Corrigido** (override 4.28.8) |
+| `fast-uri` | **Corrigido** (override 3.1.7) |
+| `qs` | **Corrigido** (override 6.16.0) |
+| `webpack-dev-server` | **Pendente** (dev only; WDS 5 incompatível com CRA 5) |
+
+### Vulnerabilidades restantes (2 moderate, dev only)
+
+Mesmas do Lote 4 — `webpack-dev-server@4.15.2` via `react-scripts`. Override para 5.x rejeitado (API `onAfterSetupMiddleware`).
+
+**Mitigação:** não expor `npm start` em rede pública; risco não afeta `npm run build` nem produção.
+
+**Ação GitHub (pós-merge):** Refresh Dependabot alerts em `/FelipeEnne/Info-covid19-app/security/dependabot/refresh`. Os 8 alertas (#382–#389) devem fechar sozinhos.
+
+### Resultado dos testes
+
+```text
+Ambiente: Node 24.20.0, CI=true
+Comando: npm test -- --watchAll=false
+
+Test Suites: 7 passed, 7 total
+Tests:       18 passed, 18 total
+```
+
+### Resultado do build
+
+```text
+Comando: npm run build
+
+Compiled successfully.
+```
+
+### Arquivos alterados
+
+- `package.json` — bloco `overrides` estendido (Lote 5)
+- `package-lock.json` — regenerado por `npm install`
+- `docs/SECURITY_UPDATES.md` — este relatório
+
+### Próximos passos recomendados
+
+1. Merge + Refresh Dependabot no GitHub
+2. Migrar para Vite ou eject para eliminar residual `webpack-dev-server`
+3. Atualizar CI para Node 20 LTS + jobs `npm test` / `npm run build`
+
+### Histórico de commits sugeridos (Lote 5)
+
+```bash
+git add package.json package-lock.json docs/SECURITY_UPDATES.md
+git commit -m "fix: patch browserslist, fast-uri, and qs Dependabot alerts via overrides"
 ```
 
 *(Commit não executado automaticamente — aguardando solicitação do usuário.)*
