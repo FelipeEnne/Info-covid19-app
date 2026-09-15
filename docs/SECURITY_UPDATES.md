@@ -693,3 +693,93 @@ git commit -m "fix: patch browserslist, fast-uri, and qs Dependabot alerts via o
 ```
 
 *(Commit não executado automaticamente — aguardando solicitação do usuário.)*
+
+---
+
+## Lote 6 — Migração CRA → Vite + Vitest (2026-09-15)
+
+### Contexto
+
+Após o Lote 5, novas advisories elevaram o `npm audit` de **2** para **10** vulnerabilidades (8 high, 2 moderate), todas em transitivas de `react-scripts@5.0.1`:
+
+| Pacote | Severidade | Causa |
+|--------|------------|-------|
+| `js-yaml` 4.3.1 | High | ESLint + Jest (CRA) |
+| `svgo` 2.8.3 | High | `@svgr/webpack` (CRA) |
+| `colord` 2.9.3 | Moderate | `cssnano` (CRA) |
+| `webpack-dev-server` 4.15.2 | Moderate (6 CVEs) | `react-scripts` (sem fix compatível) |
+
+**Decisão:** migração completa para **Vite + Vitest**, eliminando `react-scripts` e o bloco `overrides` (22 pacotes).
+
+### Alterações principais
+
+| Item | Antes | Depois |
+|------|-------|--------|
+| Bundler / dev server | `react-scripts` (Webpack) | `vite` 6.4.3 |
+| Testes | Jest (CRA) | `vitest` 5.0.1 + `jsdom` |
+| Output build | `build/` | `dist/` |
+| HTML entrada | `public/index.html` | `index.html` (raiz) |
+| Deploy | Netlify manual | `netlify.toml` (SPA redirects) |
+| CI | Node 12, só lint | Node 20, test + build + lint |
+| `overrides` npm | 22 pacotes | **Removido** |
+
+### Comandos executados
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+npm audit
+CI=true npm test -- --run
+npm run build
+npm run preview
+```
+
+### Resultado do audit
+
+| Métrica | Antes (pré-Lote 6) | Depois (Lote 6) |
+|---------|-------------------:|----------------:|
+| Total | 10 | **0** |
+| High | 8 | **0** |
+| Moderate | 2 | **0** |
+| Critical | 0 | **0** |
+
+### Resultado dos testes
+
+```text
+Ambiente: Node 24.20.0
+Comando: npm test -- --run
+
+Test Files: 7 passed, 7 total
+Tests:       18 passed, 18 total
+```
+
+### Resultado do build
+
+```text
+Comando: npm run build
+
+✓ built in ~1.5s
+Output: dist/
+```
+
+### Arquivos alterados
+
+- `package.json` — remove `react-scripts`, adiciona Vite/Vitest, remove `overrides`
+- `package-lock.json` — regenerado
+- `vite.config.js` — novo (JSX em `.js`, porta 3000, Vitest)
+- `index.html` — movido para raiz (convenção Vite)
+- `public/index.html` — removido
+- `netlify.toml` — novo (`publish = "dist"`, SPA redirects)
+- `.eslintrc.json` — `vitest/globals` + `eslint-plugin-vitest`
+- `.gitignore` — adiciona `/dist`
+- `.github/linters.yml` — Node 20, jobs test/build/eslint/stylelint
+- `docs/SECURITY_UPDATES.md` — este relatório
+- `docs/SETUP.md`, `docs/COMMANDS.md`, `docs/DEPENDENCY_UPGRADE_PLAN.md`, `README.md` — atualizados
+
+### Histórico de commits sugeridos (Lote 6)
+
+```bash
+git add package.json package-lock.json vite.config.js index.html netlify.toml \
+  .eslintrc.json .gitignore .github/linters.yml docs/
+git commit -m "fix: migrate from CRA to Vite and eliminate dependency vulnerabilities"
+```

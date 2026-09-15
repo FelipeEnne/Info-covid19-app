@@ -249,15 +249,16 @@ Deve ser feito agora ou depois: DEPOIS de React 18
 
 ## Riscos gerais
 
-- **32 vulnerabilidades** restantes em transitivas do CRA 5 (js-yaml, nth-check, uuid/sockjs)
+- ~~**32 vulnerabilidades** restantes em transitivas do CRA 5~~ — resolvido com migração Vite (Lote 6)
 - ~~**`npm audit fix --force` proibido**~~ — substituído por migração CRA 5 controlada (**aplicada**)
 - ~~**Dois lockfiles**~~ — resolvido: npm + `package-lock.json` apenas
 - ~~**CRA 2 + Node 22**~~ — resolvido com CRA 5
+- ~~**Migração Vite**~~ — **aplicada** (Lote 6, 2026-09-15); `npm audit` = 0
 
 ---
 
 ## Próximos passos
 
-1. Atualizar CI para Node 20 + test/build jobs
-2. Planejar **react-router-dom 6**
-3. Commit: `fix: upgrade to CRA 5 and resolve dependency vulnerabilities`
+1. Planejar **react-router-dom 6**
+2. Migrar API descontinuada (`covid19api.com`) para fonte alternativa
+3. Atualizar Bootstrap 4 → 5 (opcional)

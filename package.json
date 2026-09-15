@@ -2,9 +2,9 @@
   "name": "info_covid_19app",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
-    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/user-event": "^14.5.2",
     "bootstrap": "^4.6.2",
     "prop-types": "^15.7.2",
@@ -13,62 +13,29 @@
     "react-dom": "^18.3.1",
     "react-redux": "^7.2.9",
     "react-router-dom": "^5.3.4",
-    "react-scripts": "^5.0.1",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^14.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.34.1",
-    "eslint-plugin-react-hooks": "^4.6.0"
-  },
-  "overrides": {
-    "@tootallnate/once": "2.0.1",
-    "underscore": "1.13.8",
-    "serialize-javascript": "7.0.6",
-    "nth-check": "2.0.1",
-    "js-yaml": "4.3.1",
-    "resolve-url-loader": "5.0.0",
-    "uuid": "11.1.1",
-    "shell-quote": "1.10.0",
-    "browserslist": "4.28.8",
-    "fast-uri": "3.1.7",
-    "qs": "6.16.0",
-    "postcss": "8.5.26",
-    "body-parser": "1.20.6",
-    "svgo": "2.8.3",
-    "nanoid": "3.3.18",
-    "minimatch@3": {
-      "brace-expansion": "1.1.18"
-    },
-    "minimatch@5": {
-      "brace-expansion": "2.1.4"
-    }
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-vitest": "^0.5.4",
+    "jsdom": "^25.0.1",
+    "vite": "^6.4.3",
+    "vitest": "^5.0.1"
   }
 }

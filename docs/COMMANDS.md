@@ -28,11 +28,11 @@ Não há script separado para frontend/backend — o projeto é 100% frontend.
 ## Build
 
 ```bash
-# Build de produção → pasta build/
+# Build de produção → pasta dist/
 npm run build
 
-# Ejetar configuração CRA (irreversível — evitar)
-npm run eject
+# Preview local do build de produção
+npm run preview
 ```
 
 ---
@@ -44,10 +44,10 @@ npm run eject
 npm test
 
 # Modo CI (executa uma vez e encerra)
-CI=true npm test
+npm test -- --run
 ```
 
-**Framework:** Jest via `react-scripts` + Enzyme.
+**Framework:** Vitest + `@testing-library/react` + jsdom.
 
 **Arquivos de teste:** `src/test/`
 
@@ -56,8 +56,6 @@ CI=true npm test
 | `src/test/actions/index.test.js` | Actions Redux |
 | `src/test/components/*.test.js` | Componentes (5 arquivos) |
 | `src/test/containers/Summary.test.js` | Container Summary |
-
-**Nota:** o CI (`.github/linters.yml`) **não executa testes** — apenas lint.
 
 ---
 
@@ -75,7 +73,7 @@ npx stylelint "**/*.{css,scss}"
 
 Configurações:
 
-- ESLint: `.eslintrc.json` (Airbnb + React)
+- ESLint: `.eslintrc.json` (react-app + vitest)
 - Stylelint: `.stylelintrc.json`
 
 ---
@@ -108,7 +106,7 @@ git status
 git checkout -b nome-da-branch
 ```
 
-**CI (GitHub Actions):** dispara em `pull_request`, executa ESLint e Stylelint com Node 12.x.
+**CI (GitHub Actions):** dispara em `pull_request`, executa testes, build, ESLint e Stylelint com Node 20.
 
 Arquivo: `.github/linters.yml`
 
@@ -123,8 +121,8 @@ Arquivo: `.github/linters.yml`
 | Instalar | `npm install` |
 | Dev | `npm start` |
 | Build | `npm run build` |
+| Preview | `npm run preview` |
 | Testes | `npm test` |
-| Testes CI | `CI=true npm test` |
+| Testes CI | `npm test -- --run` |
 | Lint JS | `npx eslint .` |
 | Lint CSS | `npx stylelint "**/*.{css,scss}"` |
-| Eject CRA | `npm run eject` ⚠️ |

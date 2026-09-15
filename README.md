@@ -38,6 +38,7 @@ A project is based on a catalog of statistics. The goal is a catalog that you ca
 - JavaScript
 - React
 - Redux
+- Vite
 - <a href="https://covid19api.com/">COVID19 API</a>
 - CSS
 - HTML
@@ -49,8 +50,9 @@ A project is based on a catalog of statistics. The goal is a catalog that you ca
 - Clone or Download
 - Extract the project if you Download
 - Go to the folder with your terminal
-- Run npm install
-- Run npm start
+- Run `npm install`
+- Run `npm start` (dev server at http://localhost:3000)
+- Run `npm run build` for production build (`dist/`)
 
 ## Acknowledgements
 

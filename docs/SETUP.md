@@ -8,11 +8,11 @@ Guia para rodar o projeto localmente pela primeira vez.
 
 | Requisito | Versão recomendada | Observação |
 |-----------|-------------------|------------|
-| Node.js | 14.x – 16.x | CRA 2.x (`react-scripts` 2.1.3) pode falhar em Node 17+ sem flags legadas |
-| npm | 6.x ou superior | Gerenciador padrão (`package-lock.json`) |
+| Node.js | 20.x LTS | CI usa Node 20; Node 18+ funciona |
+| npm | 9.x ou superior | Gerenciador padrão (`package-lock.json`) |
 | Git | Qualquer versão recente | Para clonar o repositório |
 
-O CI do projeto usa **Node 12.x** (`.github/linters.yml`), que está fora de suporte. Para desenvolvimento local, prefira Node 14 ou 16.
+O CI do projeto usa **Node 20** (`.github/linters.yml`).
 
 **Não é necessário:** banco de dados, Docker, variáveis de ambiente (no estado atual do código).
 
@@ -41,7 +41,7 @@ Use **npm** — o repositório mantém apenas `package-lock.json`.
 npm start
 ```
 
-O CRA abrirá automaticamente em `http://localhost:3000` (ou a próxima porta disponível).
+O Vite abrirá em `http://localhost:3000` (ou a próxima porta disponível).
 
 ### 4. Build de produção (opcional)
 
@@ -49,7 +49,15 @@ O CRA abrirá automaticamente em `http://localhost:3000` (ou a próxima porta di
 npm run build
 ```
 
-Gera a pasta `build/` com arquivos estáticos prontos para deploy.
+Gera a pasta `dist/` com arquivos estáticos prontos para deploy.
+
+### 5. Preview do build (opcional)
+
+```bash
+npm run preview
+```
+
+Serve o conteúdo de `dist/` localmente para validar o build de produção.
 
 ---
 
@@ -57,14 +65,14 @@ Gera a pasta `build/` com arquivos estáticos prontos para deploy.
 
 **Estado atual:** o projeto **não usa** variáveis de ambiente. A URL da API está hardcoded em `src/actions/fechSummary.js`.
 
-O `.gitignore` já ignora arquivos `.env.*.local` (padrão CRA). Se no futuro a URL da API for externalizada, o padrão seria:
+O `.gitignore` já ignora arquivos `.env.*.local`. Se no futuro a URL da API for externalizada, o padrão Vite seria:
 
 ```bash
 # .env (exemplo — NÃO commitar)
-REACT_APP_API_URL=https://api.exemplo.com/summary
+VITE_API_URL=https://api.exemplo.com/summary
 ```
 
-No código React (CRA), apenas variáveis com prefixo `REACT_APP_` são expostas ao browser.
+No código, variáveis com prefixo `VITE_` são expostas ao browser via `import.meta.env`.
 
 **Não existe** `.env.example` no repositório.
 
@@ -93,8 +101,9 @@ O arquivo `src/reducers/initialState.js` funciona como um **mock estático** (sn
 | Instalar deps | `npm install` |
 | Dev server | `npm start` |
 | Build produção | `npm run build` |
+| Preview build | `npm run preview` |
 | Testes (interativo) | `npm test` |
-| Testes (CI, sem watch) | `CI=true npm test` |
+| Testes (CI, sem watch) | `npm test -- --run` |
 | Lint JS | `npx eslint .` |
 | Lint CSS | `npx stylelint "**/*.{css,scss}"` |
 
@@ -110,19 +119,6 @@ A API `https://api.covid19api.com/summary` foi **descontinuada** (~2022). O fetc
 
 **Solução definitiva:** migrar para API alternativa (ver [TODO_LEGACY.md](./TODO_LEGACY.md)).
 
-### Erro ao instalar com Node 17+
-
-`react-scripts` 2.x usa OpenSSL legado. Possíveis soluções:
-
-```bash
-# Opção 1: usar Node 16 via nvm
-nvm use 16
-
-# Opção 2: flag legada (não recomendado em produção)
-set NODE_OPTIONS=--openssl-legacy-provider
-npm start
-```
-
 ### Imagens quebradas no README
 
 O README referencia `./public/assets/img/` (screenshots), mas essa pasta **não existe** no repositório atual. Isso não afeta o funcionamento da app.
@@ -133,21 +129,14 @@ O projeto usa **apenas npm** (`package-lock.json`). Não use `yarn install` — 
 
 ### Porta 3000 ocupada
 
-O CRA perguntará se deseja usar outra porta. Aceite ou libere a porta 3000.
-
-### Testes falhando por versão do Node
-
-Enzyme com React 16 pode ter incompatibilidades em Node muito recente. Use Node 14–16 para rodar testes.
+O Vite tentará a próxima porta disponível ou exibirá erro. Libere a porta 3000 ou configure outra em `vite.config.js`.
 
 ---
 
 ## Deploy
 
-O README documenta deploy no **Netlify**:
+O projeto inclui `netlify.toml` para deploy no **Netlify**:
 
 1. `npm run build`
-2. Publicar conteúdo da pasta `build/`
-
-Não há `netlify.toml` no repositório. A configuração de SPA fallback (redirects para `index.html`) pode estar no painel do Netlify.
-
-**A confirmar:** se o deploy no Netlify ainda está ativo e funcional.
+2. Publicar conteúdo da pasta `dist/` (configurado automaticamente via `netlify.toml`)
+3. Redirects SPA para rotas `/new` e `/seach` incluídos
