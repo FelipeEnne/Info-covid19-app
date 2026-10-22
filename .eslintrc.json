@@ -1,8 +1,7 @@
 {
   "env": {
     "browser": true,
-    "es6": true,
-    "vitest/globals": true
+    "es6": true
   },
   "parserOptions": {
     "ecmaFeatures": {
@@ -11,8 +10,15 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "extends": ["react-app"],
-  "plugins": ["react", "vitest"],
+  "extends": ["airbnb"],
+  "plugins": ["react"],
+  "globals": {
+    "afterEach": "readonly",
+    "beforeEach": "readonly",
+    "describe": "readonly",
+    "expect": "readonly",
+    "it": "readonly"
+  },
   "rules": {
     "react/jsx-filename-extension": ["warn", { "extensions": [".js", ".jsx"] }],
     "import/no-unresolved": "off",
