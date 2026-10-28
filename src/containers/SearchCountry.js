@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes, { object } from 'prop-types';
 import fetchSummary from '../actions/fechSummary';
 import {
-  getProductsError,
   getProductsLoading,
   getProducts,
   returnData,
@@ -16,7 +15,6 @@ import Loading from '../components/loading';
 
 
 const SeachCountry = props => {
-  // console.log(props);
   const {
     fetchSummary,
     loading,
@@ -62,21 +60,24 @@ const SeachCountry = props => {
     return <Loading />;
   }
 
+  const searchForm = (
+    <div className="searchCountry">
+      <form>
+        <div className="form-group">
+          <label htmlFor="nameCountry">
+            Put the name of your country:
+            <input className="form-control" type="text" id="nameCountry" name="nameCountry" />
+          </label>
+          <input type="button" className="btn btn-primary" value="Submit" onClick={handleClick} />
+        </div>
+      </form>
+    </div>
+  );
 
   if (country[0].country !== undefined) {
     return (
       <div>
-        <div className="searchCountry">
-          <form>
-            <div className="form-group">
-              <label htmlFor="nameCountry">
-                Put the name of your country:
-                <input className="form-control" type="text" id="nameCountry" name="nameCountry" />
-              </label>
-              <input type="button" className="btn btn-primary" value="Submit" onClick={handleClick} />
-            </div>
-          </form>
-        </div>
+        {searchForm}
         <div className="container">
           <CountryInfo value={country[0].country} />
         </div>
@@ -87,17 +88,7 @@ const SeachCountry = props => {
 
   return (
     <div>
-      <div className="searchCountry">
-        <form>
-          <div className="form-group">
-            <label htmlFor="nameCountry">
-              Put the name of your country:
-              <input className="form-control" type="text" id="nameCountry" name="nameCountry" />
-            </label>
-            <input type="button" className="btn btn-primary" value="Submit" onClick={handleClick} />
-          </div>
-        </form>
-      </div>
+      {searchForm}
       <FooterApp value={data} />
     </div>
   );
@@ -121,7 +112,6 @@ const mapDispatchToProps = dispatch => ({
 
 
 const mapStateToProps = state => ({
-  error: getProductsError(state.summary),
   loading: getProductsLoading(state.summary),
   resp: getProducts(state.summary).Countries,
   date: getProducts(state.summary).Date,

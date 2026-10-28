@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes, { object } from 'prop-types';
 import fetchSummary from '../actions/fechSummary';
 import {
-  getProductsError,
   getProductsLoading,
   getProducts,
   numberFormat,
@@ -67,7 +66,6 @@ const mapStateToProps = state => {
   const { summary } = state;
   return (
     {
-      error: getProductsError(summary),
       loading: getProductsLoading(summary),
       resp: [getProducts(summary).Global],
     }

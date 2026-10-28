@@ -1,57 +1,53 @@
-export const getProductsError = state => state.error;
 export const getProductsLoading = state => state.loading;
 export const getProducts = state => state.resp;
+
+const TOP_COUNTRIES_COUNT = 10;
+const DATE_LENGTH = 10;
+
+function sortByMetric(array, metric) {
+  return [...array].sort((a, b) => a[metric] - b[metric]);
+}
 
 export function numberFormat(i) {
   return new Intl.NumberFormat().format(i);
 }
 
 export function sortTotalConfirmed(array) {
-  return [...array].sort((a, b) => a.TotalConfirmed - b.TotalConfirmed);
+  return sortByMetric(array, 'TotalConfirmed');
 }
 
 export function sortTotalDeaths(array) {
-  return [...array].sort((a, b) => a.TotalDeaths - b.TotalDeaths);
+  return sortByMetric(array, 'TotalDeaths');
 }
 
 export function sortTotalRecovered(array) {
-  return [...array].sort((a, b) => a.TotalRecovered - b.TotalRecovered);
+  return sortByMetric(array, 'TotalRecovered');
 }
 
 export function sortNewConfirmed(array) {
-  return [...array].sort((a, b) => a.NewConfirmed - b.NewConfirmed);
+  return sortByMetric(array, 'NewConfirmed');
 }
 
 export function sortNewDeaths(array) {
-  return [...array].sort((a, b) => a.NewDeaths - b.NewDeaths);
+  return sortByMetric(array, 'NewDeaths');
 }
 
 export function sortNewRecovered(array) {
-  return [...array].sort((a, b) => a.NewRecovered - b.NewRecovered);
+  return sortByMetric(array, 'NewRecovered');
 }
 
 export function getTenArray(array, len) {
   const arr = [];
   let count = len;
-  for (let i = 0; i < 10; i += 1) {
+  for (let i = 0; i < TOP_COUNTRIES_COUNT; i += 1) {
     arr.push(array[count]);
     count -= 1;
   }
   return arr;
 }
 
-export function makeid(length) {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i += 1) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
 export function returnData(date) {
-  const result = date.slice(0, 10);
+  const result = date.slice(0, DATE_LENGTH);
   return result;
 }
 

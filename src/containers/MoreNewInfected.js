@@ -3,14 +3,12 @@ import { connect } from 'react-redux';
 import PropTypes, { object } from 'prop-types';
 import fetchSummary from '../actions/fechSummary';
 import {
-  getProductsError,
   getProductsLoading,
   getProducts,
   sortNewConfirmed,
   sortNewDeaths,
   sortNewRecovered,
   getTenArray,
-  makeid,
   returnData,
 } from '../helper/helpers';
 import CountryNewTag from '../components/CountryNewTag';
@@ -20,7 +18,6 @@ import FilterNewInfected from '../components/FilterNewInfected';
 import updateFilter from '../actions/updateFilter';
 
 const MoreNewInfected = props => {
-  // console.log(props);
   const {
     fetchSummary,
     loading,
@@ -83,7 +80,7 @@ const MoreNewInfected = props => {
             </tr>
           </thead>
           {dataTenCountries.map(value => (
-            <CountryNewTag key={makeid(5)} value={value} />
+            <CountryNewTag key={value.Country} value={value} />
           ))}
         </table>
       </div>
@@ -109,7 +106,6 @@ const mapDispatchToProps = dispatch => ({
 
 
 const mapStateToProps = state => ({
-  error: getProductsError(state.summary),
   loading: getProductsLoading(state.summary),
   resp: getProducts(state.summary).Countries,
   date: getProducts(state.summary).Date,
