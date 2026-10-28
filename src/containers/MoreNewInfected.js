@@ -42,20 +42,21 @@ const MoreNewInfected = props => {
     if (loading === true || resp === {}) return false;
 
     if (resp === undefined) return false;
+    let sortedResp;
     switch (filter) {
       case 'New Confirmed':
-        sortNewConfirmed(resp);
+        sortedResp = sortNewConfirmed(resp);
         break;
       case 'New Deaths':
-        sortNewDeaths(resp);
+        sortedResp = sortNewDeaths(resp);
         break;
       case 'New Recovered':
-        sortNewRecovered(resp);
+        sortedResp = sortNewRecovered(resp);
         break;
       default:
-        sortNewConfirmed(resp);
+        sortedResp = sortNewConfirmed(resp);
     }
-    dataTenCountries = getTenArray(resp, dataLength);
+    dataTenCountries = getTenArray(sortedResp, dataLength);
     data = returnData(date);
     return true;
   };

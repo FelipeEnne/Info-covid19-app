@@ -41,20 +41,21 @@ const MoreInfected = props => {
   const shouldComponentRender = () => {
     if (loading === true || resp.length === 0) return false;
     if (resp === undefined) return false;
+    let sortedResp;
     switch (filter) {
       case 'Total Confirmed':
-        sortTotalConfirmed(resp);
+        sortedResp = sortTotalConfirmed(resp);
         break;
       case 'Total Deaths':
-        sortTotalDeaths(resp);
+        sortedResp = sortTotalDeaths(resp);
         break;
       case 'Total Recovered':
-        sortTotalRecovered(resp);
+        sortedResp = sortTotalRecovered(resp);
         break;
       default:
-        sortTotalConfirmed(resp);
+        sortedResp = sortTotalConfirmed(resp);
     }
-    dataTenCountries = getTenArray(resp, dataLength);
+    dataTenCountries = getTenArray(sortedResp, dataLength);
     data = returnData(date);
     return true;
   };

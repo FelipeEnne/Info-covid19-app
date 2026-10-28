@@ -7,27 +7,27 @@ export function numberFormat(i) {
 }
 
 export function sortTotalConfirmed(array) {
-  array.sort((a, b) => a.TotalConfirmed - b.TotalConfirmed);
+  return [...array].sort((a, b) => a.TotalConfirmed - b.TotalConfirmed);
 }
 
 export function sortTotalDeaths(array) {
-  array.sort((a, b) => a.TotalDeaths - b.TotalDeaths);
+  return [...array].sort((a, b) => a.TotalDeaths - b.TotalDeaths);
 }
 
 export function sortTotalRecovered(array) {
-  array.sort((a, b) => a.TotalRecovered - b.TotalRecovered);
+  return [...array].sort((a, b) => a.TotalRecovered - b.TotalRecovered);
 }
 
 export function sortNewConfirmed(array) {
-  array.sort((a, b) => a.NewConfirmed - b.NewConfirmed);
+  return [...array].sort((a, b) => a.NewConfirmed - b.NewConfirmed);
 }
 
 export function sortNewDeaths(array) {
-  array.sort((a, b) => a.NewDeaths - b.NewDeaths);
+  return [...array].sort((a, b) => a.NewDeaths - b.NewDeaths);
 }
 
 export function sortNewRecovered(array) {
-  array.sort((a, b) => a.NewRecovered - b.NewRecovered);
+  return [...array].sort((a, b) => a.NewRecovered - b.NewRecovered);
 }
 
 export function getTenArray(array, len) {
