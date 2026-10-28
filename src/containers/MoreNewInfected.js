@@ -36,7 +36,7 @@ const MoreNewInfected = props => {
   let data = '';
 
   const shouldComponentRender = () => {
-    if (loading === true || resp === {}) return false;
+    if (loading === true || resp.length === 0) return false;
 
     if (resp === undefined) return false;
     let sortedResp;
@@ -113,3 +113,4 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MoreNewInfected);
+export { MoreNewInfected };

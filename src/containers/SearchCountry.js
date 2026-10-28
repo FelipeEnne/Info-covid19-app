@@ -28,30 +28,26 @@ const SeachCountry = props => {
     fetchSummary();
   }, [fetchSummary]);
 
-  let c;
-
   const handleClick = () => {
     const t = capitalize(document.getElementById('nameCountry').value);
     if (t !== '') {
-      c = resp.find(e => e.Country === t);
-      if (c === undefined) {
+      const selectedCountry = resp.find(e => e.Country === t);
+      if (selectedCountry === undefined) {
         // eslint-disable-next-line no-console
         console.error('Your country was not found');
+        return;
       }
-      selectCountry(c);
+      selectCountry(selectedCountry);
     } else {
       // eslint-disable-next-line no-console
       console.error('Is empty');
     }
   };
 
-  let dataCountries = {};
   let data = '';
 
   const shouldComponentRender = () => {
-    if (loading === true || resp === {}) return false;
-    dataCountries = resp;
-    if (dataCountries === undefined) return false;
+    if (loading === true || resp.length === 0) return false;
     data = returnData(date);
     return true;
   };
@@ -74,7 +70,7 @@ const SeachCountry = props => {
     </div>
   );
 
-  if (country[0].country !== undefined) {
+  if (country[0]?.country !== undefined) {
     return (
       <div>
         {searchForm}
@@ -119,3 +115,4 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SeachCountry);
+export { SeachCountry as SearchCountry };

@@ -3,15 +3,24 @@ import {
   fetchProductsLoading,
   fetchProductsSuccess,
 } from './loader';
+import { isValidSummary } from '../helper/validation';
 
 function fetchSummary() {
   return dispatch => {
     dispatch(fetchProductsLoading());
 
-    fetch('https://api.covid19api.com/summary')
-      .then(res => res.json())
-      .then(res => {
-        dispatch(fetchProductsSuccess(res));
+    return fetch('https://api.covid19api.com/summary')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Summary request failed with status ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(summary => {
+        if (!isValidSummary(summary)) {
+          throw new Error('Summary response has an invalid format');
+        }
+        dispatch(fetchProductsSuccess(summary));
       })
       .catch(error => {
         dispatch(fetchProductsError(error));
